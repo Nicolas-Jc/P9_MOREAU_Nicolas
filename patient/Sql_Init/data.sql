@@ -5,7 +5,7 @@ CREATE DATABASE mediscreen;
 USE mediscreen;
 
 DROP TABLE IF EXISTS patient;
-CREATE TABLE patients
+CREATE TABLE patient
 (
     id         int         NOT NULL AUTO_INCREMENT PRIMARY KEY,
     last_name  VARCHAR(50) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE patients
     phone      VARCHAR(30)
 );
 
-INSERT INTO patients (last_name, first_name, birthdate, sex, address, phone)
+INSERT INTO patient (last_name, first_name, birthdate, sex, address, phone)
 VALUES ('TestNone', 'Test', '1966-12-31', 'F', '1 Brookside St', '100-222-3333'),
        ('TestBorderline', 'Test', '1945-06-24', 'M', '2 High St', '200-333-4444'),
        ('TestInDanger', 'Test', '2004-06-18', 'M', '3 Club Road', '300-444-5555'),
