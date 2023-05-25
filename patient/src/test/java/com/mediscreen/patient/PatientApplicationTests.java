@@ -1,13 +1,13 @@
-package com.mediscreen.mediscreen;
+package com.mediscreen.patient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MediscreenApplicationTests {
+class PatientApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
