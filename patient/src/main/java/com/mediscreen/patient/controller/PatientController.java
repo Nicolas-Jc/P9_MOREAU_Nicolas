@@ -1,12 +1,7 @@
 package com.mediscreen.patient.controller;
 
-
-import com.mediscreen.patient.exception.BadRequestException;
-import com.mediscreen.patient.exception.DataAlreadyExistException;
-import com.mediscreen.patient.exception.DataNotFoundException;
 import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.service.PatientService;
-import javassist.NotFoundException;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +27,7 @@ public class PatientController {
 
 
     @GetMapping("/patients/{id}")
-    public Optional<Patient> getPatient(@PathVariable int id) throws DataNotFoundException {
+    public Optional<Patient> getPatient(@PathVariable int id) {
         return patientService.getPatientById(id);
     }
 
@@ -42,13 +37,12 @@ public class PatientController {
     }
 
     @PutMapping("/patients")
-    public Patient updatePatient(@Valid @RequestBody Patient patientToUpdate)
-            throws DataNotFoundException, BadRequestException {
+    public Patient updatePatient(@Valid @RequestBody Patient patientToUpdate) {
         return patientService.updatePatient(patientToUpdate);
     }
 
     @DeleteMapping("/patients/delete/{id}")
-    public void deletePatient(@PathVariable("id") final Integer patientId) throws DataNotFoundException {
+    public void deletePatient(@PathVariable("id") final Integer patientId) {
         patientService.deletePatient(patientId);
     }
 
