@@ -3,6 +3,7 @@ package com.mediscreen.patient.service;
 
 import com.mediscreen.patient.exception.BadRequestException;
 import com.mediscreen.patient.exception.DataAlreadyExistException;
+import com.mediscreen.patient.exception.DataNotFoundException;
 import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.repository.PatientRepository;
 import javassist.NotFoundException;
@@ -60,7 +61,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void getPatientByIdTest() throws NotFoundException {
+    void getPatientByIdTest() throws DataNotFoundException {
         // GIVEN
         Patient patient10 = new Patient("lastName10", "firstName10", LocalDate.of(2010, 10, 10), "M", "10st street Miami", "11.11.11.11.11");
         when(patientRepository.findById(10)).thenReturn(Optional.of(patient10));
@@ -73,7 +74,7 @@ public class PatientServiceTest {
     @Test
     public void getPatientByIDButNotExistTest() {
 
-        assertThrows(NotFoundException.class, () -> patientService.getPatientById(10));
+        assertThrows(DataNotFoundException.class, () -> patientService.getPatientById(10));
     }
 
     @Test
@@ -119,7 +120,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void deletePatientTest() throws NotFoundException {
+    void deletePatientTest() throws DataNotFoundException {
         //GIVEN
         patient1 = new Patient("lastName1", "firstName1", LocalDate.of(2001, 1, 1), "M", "1st street Miami", "11.11.11.11.11");
         patient1.setId(1);
@@ -133,7 +134,7 @@ public class PatientServiceTest {
 
     @Test
     public void deletePatientButIdNotExistTest() {
-        assertThrows(NotFoundException.class, () -> patientService.deletePatient(5));
+        assertThrows(DataNotFoundException.class, () -> patientService.deletePatient(5));
     }
 
 }
