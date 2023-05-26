@@ -1,136 +1,150 @@
 package com.mediscreen.patient.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
+import com.mediscreen.patient.model.Patient;
+import com.mediscreen.patient.repository.PatientRepository;
+import com.mediscreen.patient.service.PatientService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DisplayName("Patient Controller Test")
+@DisplayName("Patient Controller Tests")
 public class PatientControllerTest {
 
     @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private PatientRepository patientRepository;
 
     @MockBean
     private PatientService patientService;
-    //private Patient patient;
-    //private Patient patient1;
-    //private Patient patient2;
-    //private List<Patient> listPatients;
+    @Autowired
+    private ObjectMapper objectMapper;
 
+    Patient patient1;
+    Patient patient2;
+    Patient patient3;
+
+    List<Patient> listPatient;
+
+    @BeforeEach
+    void setup() {
+        patient1 = new Patient("lastName1", "firstName1", LocalDate.of(2001, 1, 1), "M", "1st street Miami", "11.11.11.11.11");
+        patient2 = new Patient("lastName2", "firstName2", LocalDate.of(2002, 2, 2), "F", "2nd street Miami", "22.22.22.22.22");
+        patient3 = new Patient("lastName3", "firstName3", LocalDate.of(2003, 3, 3), "F", "3nd street Miami", "33.33.33.33.33");
+        listPatient = new ArrayList<>();
+        listPatient.add(patient1);
+        listPatient.add(patient2);
+        listPatient.add(patient3);
+
+    }
 
     @Test
-    public void getAllPatientsTest() throws Exception {
-
-        // GIVEN
-        Patient patient1 = new Patient(1, "LastName1", "FirstName1", LocalDate.of(2000, 1, 1), "M", "address1", "+33777777777");
-        Patient patient2 = new Patient(2, "LastName2", "FirstName2", LocalDate.of(2001, 2, 2), "F", "address2", "+33888888888");
-        List<Patient> listPatients = new ArrayList<>();
-        listPatients.add(patient1);
-        listPatients.add(patient2);
-        // WHEN
-        Mockito.when(patientService.getAllPatients()).thenReturn(listPatients);
-        // THEN
-        MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/patient/list")
-                        .contentType(MediaType.APPLICATION_JSON))
+    void getPatientsTest() throws Exception {
+        //GIVEN
+        when(patientService.getAllPatients()).thenReturn(listPatient);
+        //WHEN
+        //THEN
+        MvcResult mvcResult = mockMvc.perform(get("/patients"))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertNotNull(mockMvcResult);
-        Assertions.assertTrue(mockMvcResult.getResponse().getContentAsString().contains("birthDate"));
-    }
-
-
-    @Test
-    public void getPatientByIdTest() throws Exception {
-
-        // GIVEN
-        Patient patient1 = new Patient(1, "LastName1", "FirstName1", LocalDate.of(2000, 1, 1), "M", "address1", "+33777777777");
-        // WHEN
-        Mockito.when(patientService.getPatientById(1)).thenReturn(Optional.of(patient1));
-
-        MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/patient/get/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn();
-        // THEN
-        assertNotNull(mockMvcResult);
+        List<Patient> listPatientResult = objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(), new TypeReference<>() {
+        });
+        assertEquals(3, listPatientResult.size());
     }
 
     @Test
-    public void AddPatientTest() throws Exception {
+    void getPatientTest() throws Exception {
+        //GIVEN
+        when(patientService.getPatientById(2)).thenReturn(Optional.of(patient2));
+        //WHEN
+        //THEN
+        MvcResult mvcResult = mockMvc.perform(get("/patients/2"))
+                .andExpect(status().isOk())
+                .andReturn();
 
-        // GIVEN
-        Patient patient = new Patient();
-        patient.setLastName("LastName1");
-        patient.setFirstName("FirstName1");
-        patient.setBirthDate(LocalDate.of(2000, 1, 1));
-        patient.setSex("F");
-        patient.setAddress("address1");
-        patient.setPhoneNumber("+33 777777777");
-        // WHEN
-        MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/patient/add")
-                        .content(objectMapper.writeValueAsString(patient))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated()).andReturn();
-        // THEN
-        assertNotNull(mockMvcResult);
-    }
-
-
-    @Test
-    public void TestUpdatePatient() throws Exception {
-
-        // GIVEN
-        Patient patient = new Patient();
-        patient.setLastName("LastName1");
-        patient.setFirstName("FirstName1");
-        patient.setBirthDate(LocalDate.of(2000, 1, 1));
-        patient.setSex("F");
-        patient.setAddress("address1");
-        patient.setPhoneNumber("+33 777777777");
-        // WHEN
-        MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/patient/update/1")
-                        .content(objectMapper.writeValueAsString(patient))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn();
-        // THEN
-        assertNotNull(mockMvcResult);
+        Patient patientResult = objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(), new TypeReference<>() {
+        });
+        assertEquals("lastName2", patientResult.getLastName());
+        assertEquals("firstName2", patientResult.getFirstName());
     }
 
     @Test
-    public void TestDeletePatient() throws Exception {
-
+    void deletePatientTest() throws Exception {
         // GIVEN
         // WHEN
-        MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/patient/delete/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn();
-        // THEN
-        assertNotNull(mockMvcResult);
+        mockMvc.perform(delete("/patients/delete/1"));
+        //THEN
+        verify(patientService, times(1)).deletePatient(1);
     }
 
+    @Test
+    void addPatientTest() throws Exception {
+        //GIVEN
+        when(patientRepository.findByLastNameAndFirstNameAndBirthDate("mike", "smith", LocalDate.of(2002, 2, 2))).thenReturn(patient2);
+        patient2.setId(1);
+        when(patientRepository.save(any(Patient.class))).thenReturn(patient2);
+        String jsonContent = objectMapper.writeValueAsString(patient2);
 
+        //WHEN
+        MvcResult result =
+                mockMvc.perform(
+                                post("/patients/add")
+                                        .contentType(MediaType.APPLICATION_JSON).content(jsonContent)
+                        )
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+        //THEN:
+        ArgumentCaptor<Patient> patientArgumentCaptor = ArgumentCaptor.forClass(Patient.class);
+        verify(patientRepository, times(1)).save(patientArgumentCaptor.capture());
+        Patient patientCaptured = patientArgumentCaptor.getValue();
+
+        assertEquals("mike", patientCaptured.getGiven());
+        assertEquals("smith", patientCaptured.getFamily());
+        assertEquals(LocalDate.of(2005, 3, 25), patientCaptured.getDob());
+        assertEquals("M", patientCaptured.getSex());
+        assertEquals("Residence Palmas Miami", patientCaptured.getAddress());
+        assertEquals("555-666-777", patientCaptured.getPhone());
+
+        Patient patientReturned = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<Patient>() {
+        });
+        assertNotNull(patientReturned);
+        assertEquals(1, patientReturned.getId());
+        assertEquals("mike", patientReturned.getGiven());
+        assertEquals("smith", patientReturned.getFamily());
+    }
+
+    @Test
+    void updatePatientTest() {
+
+    }
 }

@@ -69,19 +69,8 @@ public class PatientService {
         if (patientToUpdate == null) {
             throw new NotFoundException("Patient Id : " + patient.getId() + " cannot be found");
         }
-        /*Patient patientToUpdate = patientRepository.findById(patientId)
-                .orElseThrow(() -> new DataNotFoundException("Patient doesn't exist"));*/
-
-       /* patientToUpdate.setFirstName(patient.getFirstName());
-        patientToUpdate.setLastName(patient.getLastName());
-        patientToUpdate.setBirthDate(patient.getBirthDate());
-        patientToUpdate.setSex(patient.getSex());
-        patientToUpdate.setAddress(patient.getAddress());
-        patientToUpdate.setPhoneNumber(patient.getPhoneNumber());*/
 
         logger.info("Service : update Patient - check");
-        //Patient patientToUpdate = patientRepository.findById(patientId)
-        //patientRepository.save(patientToUpdate);
         return patientRepository.save(patient);
     }
 

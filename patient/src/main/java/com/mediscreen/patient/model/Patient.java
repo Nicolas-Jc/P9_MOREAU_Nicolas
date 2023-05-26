@@ -51,20 +51,30 @@ public class Patient {
     //, message = "Please Enter a valid phone number")
     private String phoneNumber;
 
-    public Patient(long i, String lastname, String firstname, LocalDate of, String m, String address, String s) {
-    }
+   /* public Patient(Integer i, String lastname, String firstname, LocalDate of, String m, String address, String s) {
+    }*/
 
-    public Patient(String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
+    /*public Patient(String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.birthDate = birthDate;
         this.sex = sex;
         this.address = address;
         this.phoneNumber = phoneNumber;
-    }
+    }*/
 
-    public Patient(Integer id, String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
+   /* public Patient(Integer id, String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
         this.id = id;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }*/
+
+    public Patient(String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
+        super();
         this.lastName = lastName;
         this.firstName = firstName;
         this.birthDate = birthDate;
@@ -74,7 +84,6 @@ public class Patient {
     }
 
     public Patient() {
-
     }
 
     public Integer getId() {

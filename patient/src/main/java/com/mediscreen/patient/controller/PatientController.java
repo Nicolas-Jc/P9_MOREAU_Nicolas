@@ -28,17 +28,6 @@ public class PatientController {
         return patientService.getAllPatients();
     }
 
-   /* @GetMapping("/get/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable long id) {
-
-        Optional<Patient> patient = patientService.getPatientById(id);
-        if (patient.isPresent()) {
-            return new ResponseEntity<>(patient.get(), HttpStatus.OK);
-        } else {
-            throw new DataNotFoundException("Patient doesn't exist");
-
-        }
-    }*/
 
     @GetMapping("/patients/{id}")
     public Optional<Patient> getPatient(@PathVariable int id) throws NotFoundException {
@@ -59,7 +48,7 @@ public class PatientController {
         return patientService.updatePatient(patientId, patientRequest);
     }*/
 
-    @PutMapping(value = "/patients")
+    @PutMapping("/patients")
     public Patient updatePatient(@Valid @RequestBody Patient patientToUpdate)
             throws NotFoundException, BadRequestException {
 
