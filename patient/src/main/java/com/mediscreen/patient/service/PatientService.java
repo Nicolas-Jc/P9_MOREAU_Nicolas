@@ -46,11 +46,11 @@ public class PatientService {
     public Patient addPatient(Patient patientToAdd) {
         logger.debug("Service : add Patient - called");
 
-        Patient patientToCheck = patientRepository.findByLastNameAndFirstNameAndBirthDate(patientToAdd.getLastName(),
+        Boolean patientToCheck = patientRepository.findByLastNameAndFirstNameAndBirthDate(patientToAdd.getLastName(),
                 patientToAdd.getFirstName(),
                 patientToAdd.getBirthDate());
 
-        if (patientToCheck != null) {
+        if (Boolean.TRUE.equals(patientToCheck)) {
             throw new DataAlreadyExistException("The patient " + patientToAdd.getFirstName()
                     + " / " + patientToAdd.getBirthDate() + " already exists");
         }
@@ -77,8 +77,7 @@ public class PatientService {
     public void deletePatient(int patientId) throws NotFoundException {
 
         logger.debug("Service : delete Patient - supply");
-        /*patientRepository.findById(patientId)
-                .orElseThrow(() -> new DataNotFoundException("Patient doesn't exist"));*/
+
         if (!patientRepository.existsById(patientId))
             throw new NotFoundException("Deletion impossible, patient id : "
                     + patientId + " cannot be found");

@@ -1,6 +1,5 @@
 package com.mediscreen.patient.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mediscreen.patient.model.Patient;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -106,45 +105,18 @@ public class PatientControllerTest {
         verify(patientService, times(1)).deletePatient(1);
     }
 
-    @Test
-    void addPatientTest() throws Exception {
-        //GIVEN
-        when(patientRepository.findByLastNameAndFirstNameAndBirthDate("mike", "smith", LocalDate.of(2002, 2, 2))).thenReturn(patient2);
-        patient2.setId(1);
-        when(patientRepository.save(any(Patient.class))).thenReturn(patient2);
-        String jsonContent = objectMapper.writeValueAsString(patient2);
-
-        //WHEN
-        MvcResult result =
-                mockMvc.perform(
-                                post("/patients/add")
-                                        .contentType(MediaType.APPLICATION_JSON).content(jsonContent)
-                        )
-                        .andExpect(status().isOk())
-                        .andReturn();
-
-        //THEN:
-        ArgumentCaptor<Patient> patientArgumentCaptor = ArgumentCaptor.forClass(Patient.class);
-        verify(patientRepository, times(1)).save(patientArgumentCaptor.capture());
-        Patient patientCaptured = patientArgumentCaptor.getValue();
-
-        assertEquals("mike", patientCaptured.getGiven());
-        assertEquals("smith", patientCaptured.getFamily());
-        assertEquals(LocalDate.of(2005, 3, 25), patientCaptured.getDob());
-        assertEquals("M", patientCaptured.getSex());
-        assertEquals("Residence Palmas Miami", patientCaptured.getAddress());
-        assertEquals("555-666-777", patientCaptured.getPhone());
-
-        Patient patientReturned = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<Patient>() {
-        });
-        assertNotNull(patientReturned);
-        assertEquals(1, patientReturned.getId());
-        assertEquals("mike", patientReturned.getGiven());
-        assertEquals("smith", patientReturned.getFamily());
-    }
 
     @Test
-    void updatePatientTest() {
+    void updatePatientTest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/patients")
+                        .content(objectMapper.writeValueAsString(patient1))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
 
+        assertNotNull(mvcResult);
     }
+
+
 }

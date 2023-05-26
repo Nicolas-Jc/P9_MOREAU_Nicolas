@@ -9,6 +9,6 @@ import java.time.LocalDate;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
-    Patient findByLastNameAndFirstNameAndBirthDate(final String lastName, final String firstName, final LocalDate birthDate);
+    Boolean findByLastNameAndFirstNameAndBirthDate(final String lastName, final String firstName, final LocalDate birthDate);
 
 }

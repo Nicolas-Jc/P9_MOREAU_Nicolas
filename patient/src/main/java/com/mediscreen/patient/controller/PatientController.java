@@ -31,35 +31,23 @@ public class PatientController {
 
     @GetMapping("/patients/{id}")
     public Optional<Patient> getPatient(@PathVariable int id) throws NotFoundException {
-        /* if (patient.isEmpty())
-            throw new NotFoundException("The Id patient" + id + "does not exist");*/
         return patientService.getPatientById(id);
     }
 
     @PostMapping("/patients/add")
     public Patient addPatient(@Valid @RequestBody final Patient patientToAdd) {
-
         return patientService.addPatient(patientToAdd);
     }
-
-   /* @PostMapping("/update/{id}")
-    public Patient updatePatient(@PathVariable("id") Integer patientId, @Valid @RequestBody Patient patientRequest) {
-
-        return patientService.updatePatient(patientId, patientRequest);
-    }*/
 
     @PutMapping("/patients")
     public Patient updatePatient(@Valid @RequestBody Patient patientToUpdate)
             throws NotFoundException, BadRequestException {
-
         return patientService.updatePatient(patientToUpdate);
     }
 
     @DeleteMapping("/patients/delete/{id}")
     public void deletePatient(@PathVariable("id") final Integer patientId) throws NotFoundException {
-
         patientService.deletePatient(patientId);
     }
-
 
 }

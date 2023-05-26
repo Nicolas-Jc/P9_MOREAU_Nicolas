@@ -55,7 +55,7 @@ public class PatientServiceTest {
         // WHEN
         List<Patient> results = patientService.getAllPatients();
         // THEN
-        assertEquals(results.get(1).getLastName(), "lastName2");
+        assertEquals("lastName2", results.get(1).getLastName());
         assertEquals(3, results.size());
     }
 
@@ -93,7 +93,7 @@ public class PatientServiceTest {
         //GIVEN
         Patient patient6 = new Patient("lastName6", "firstName6", LocalDate.of(2010, 10, 10), "M", "10st street Miami", "11.11.11.11.11");
         //WHEN
-        when(patientRepository.findByLastNameAndFirstNameAndBirthDate(patient6.getLastName(), patient6.getFirstName(), patient6.getBirthDate())).thenReturn(patient6);
+        when(patientRepository.findByLastNameAndFirstNameAndBirthDate(patient6.getLastName(), patient6.getFirstName(), patient6.getBirthDate())).thenReturn(Boolean.TRUE);
         //THEN
         assertThrows(DataAlreadyExistException.class, () -> patientService.addPatient(patient6));
     }
@@ -123,10 +123,7 @@ public class PatientServiceTest {
         //GIVEN
         patient1 = new Patient("lastName1", "firstName1", LocalDate.of(2001, 1, 1), "M", "1st street Miami", "11.11.11.11.11");
         patient1.setId(1);
-        //when(patientRepository.save(patient1)).thenReturn(patient1);
         when(patientRepository.existsById(1)).thenReturn(Boolean.TRUE);
-        //when(patientRepository.findById(1)).thenReturn(Optional.ofNullable(patient1));
-        //when(patientRepository.save(patient1)).thenReturn(patient1);
         // WHEN
         patientService.deletePatient(1);
         // THEN
