@@ -23,6 +23,7 @@
 
     <modules>
         <module>patient</module>
+        <module>note</module>
     </modules>
 
     <build>

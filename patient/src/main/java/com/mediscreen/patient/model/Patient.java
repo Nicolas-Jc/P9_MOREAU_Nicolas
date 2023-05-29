@@ -47,6 +47,7 @@ public class Patient {
 
     @Size(max = 30)
     @Column(name = "phone")
+    // Pattern : "111-222-333"
     // @Pattern(regexp = "^(33|0)(6|7|9)\\d{8}$"
     //, message = "Please Enter a valid phone number")
     private String phoneNumber;
