@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface NoteRepository extends MongoRepository<Note, String> {
 
-    List<Note> findByPatientId(Integer patId);
+    List<Note> findByPatientId(Integer patientId);
 
-    void deleteAllByPatientId(Integer patId);
+    void deleteAllByPatientId(Integer patientId);
 
 }

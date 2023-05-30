@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,13 +32,63 @@ public class NoteService {
         return notes;
     }
 
-    public Optional<Note> getPatientById(String noteId) {
+    public Optional<Note> getNoteById(String noteId) {
 
-        logger.debug("Service: getPatientById - called");
+        logger.debug("Service: getNoteById - called");
         Optional<Note> note = noteRepository.findById(noteId);
         if (note.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Id patient : " + noteId + " does not exist");
         return note;
     }
 
+    public Note addNote(Note noteToAdd) {
+        logger.debug("Service : addNote - called");
+        noteToAdd.setId(null);
+        Note noteToSave = noteRepository.insert(noteToAdd);
+        logger.debug("Service : addNote - succes");
+        return noteToSave;
+    }
+
+    public Note updateNote(Note note) {
+
+        logger.debug("Service : update Note - supply");
+        if (note.getId() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is empty !");
+
+        Note noteToUpdate = noteRepository.findById(note.getId()).orElse(null);
+        if (noteToUpdate == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note Id : " + note.getId() + " cannot be found");
+
+        }
+
+        logger.info("Service : update Note - check");
+        return noteRepository.save(note);
+    }
+
+    public void deleteNoteById(String noteId) {
+
+        logger.debug("Service : delete Note - supply");
+
+        if (!noteRepository.existsById(noteId))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Deletion impossible, note id : "
+                    + noteId + " cannot be found");
+        noteRepository.deleteById(noteId);
+        logger.info("Service : delete Note - check");
+    }
+
+    public List<Note> getNotesByPatientId(int patientId) {
+
+        logger.debug("Service: getNotesByPatientId - called");
+        List<Note> notesList = noteRepository.findByPatientId(patientId);
+        if (notesList.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Patient file Id: " + patientId + " contains no notes");
+        return notesList;
+    }
+
+    public void deleteAllNotesByPatientId(Integer patientId) {
+        logger.debug("Service : delete All Notes - supply");
+
+        noteRepository.deleteAllByPatientId(patientId);
+        logger.info("Service : delete All Notes - check");
+    }
 }

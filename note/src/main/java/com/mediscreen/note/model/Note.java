@@ -21,6 +21,22 @@ public class Note {
     @NotBlank(message = "Note content is mandatory")
     private String doctorNote;
 
+    public Note(Integer patientId, LocalDate noteDate, String doctorNote) {
+        this.patientId = patientId;
+        this.noteDate = noteDate;
+        this.doctorNote = doctorNote;
+    }
+
+    public Note(String id, Integer patientId, LocalDate noteDate, String doctorNote) {
+        this.id = id;
+        this.patientId = patientId;
+        this.noteDate = noteDate;
+        this.doctorNote = doctorNote;
+    }
+
+    public Note() {
+    }
+
     public String getId() {
         return id;
     }

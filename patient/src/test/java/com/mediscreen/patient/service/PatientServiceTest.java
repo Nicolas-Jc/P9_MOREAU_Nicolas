@@ -78,7 +78,6 @@ public class PatientServiceTest {
     void addPatientTest() {
         //GIVEN
         Patient patient5 = new Patient("lastName5", "firstName5", LocalDate.of(2010, 10, 10), "M", "10st street Miami", "11.11.11.11.11");
-        //WHEN
         when(patientRepository.save(patient5)).thenReturn(patient5);
         // WHEN
         Patient response = patientService.addPatient(patient5);
