@@ -37,7 +37,7 @@ public class NoteService {
         logger.debug("Service: getNoteById - called");
         Optional<Note> note = noteRepository.findById(noteId);
         if (note.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Id patient : " + noteId + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Id note : " + noteId + " does not exist");
         return note;
     }
 
@@ -79,10 +79,7 @@ public class NoteService {
     public List<Note> getNotesByPatientId(int patientId) {
 
         logger.debug("Service: getNotesByPatientId - called");
-        List<Note> notesList = noteRepository.findByPatientId(patientId);
-        if (notesList.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Patient file Id: " + patientId + " contains no notes");
-        return notesList;
+        return noteRepository.findByPatientId(patientId);
     }
 
     public void deleteAllNotesByPatientId(Integer patientId) {

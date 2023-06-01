@@ -24,6 +24,33 @@ public class NoteController {
 
     @GetMapping("/notes/{id}")
     public Optional<Note> getNote(@PathVariable String id) {
-        return noteService.getPatientById(id);
+        return noteService.getNoteById(id);
     }
+
+    @PostMapping("/notes/add")
+    public Note addNote(@Valid @RequestBody final Note noteToAdd) {
+        return noteService.addNote(noteToAdd);
+    }
+
+    @PutMapping("/notes")
+    public Note updatePatient(@Valid @RequestBody Note patientToUpdate) {
+        return noteService.updateNote(patientToUpdate);
+    }
+
+    @DeleteMapping("/notes/delete/{id}")
+    public void deleteNote(@PathVariable("id") final String noteId) {
+        noteService.deleteNoteById(noteId);
+    }
+
+    @GetMapping("/patients/{patientId}/notes")
+    public List<Note> getNotesByPatient(@PathVariable Integer patientId) {
+        return noteService.getNotesByPatientId(patientId);
+    }
+
+    @DeleteMapping(value = "/patients/{patientId}/notes/delete")
+    public void deleteAllPatientNotes(@PathVariable Integer patientId) {
+        noteService.deleteAllNotesByPatientId(patientId);
+    }
+
+
 }
