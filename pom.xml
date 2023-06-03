@@ -22,6 +22,7 @@
     </properties>
 
     <modules>
+        <module>clientui</module>
         <module>patient</module>
         <module>note</module>
         <module>assessment</module>
