@@ -24,6 +24,7 @@
     <modules>
         <module>patient</module>
         <module>note</module>
+        <module>assessment</module>
     </modules>
 
     <build>
