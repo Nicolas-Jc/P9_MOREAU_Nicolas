@@ -1,6 +1,11 @@
 package com.mediscreen.assessment.service;
 
+import com.mediscreen.assessment.beans.NoteBean;
+import com.mediscreen.assessment.beans.PatientBean;
 import com.mediscreen.assessment.constant.RiskLevel;
+import com.mediscreen.assessment.proxies.NotesProxy;
+import com.mediscreen.assessment.proxies.PatientsProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -18,18 +23,24 @@ public class AssessmentService {
     @Value("#{${triggers}}")
     private List<String> triggersList;
 
+    @Autowired
+    private NotesProxy microserviceNotesProxy;
+
+    @Autowired
+    private PatientsProxy microservicePatientsProxy;
+
     public String diabeteAssessment(Integer patientId) {
 
         String diabeteAssessment = "";
 
-        Patient patient = patient.getPatient(patientId);
+        PatientBean patient = microservicePatientsProxy.getPatientById(patientId);
         // récupération ensemble des notes d'un patient
-        List<Note> listNotes = note.getNotesByPatientId(patientId);
+        List<NoteBean> listNotes = microserviceNotesProxy.getNotesByPatient(patientId);
         // Comptage Nb de Termes déclencheurs
         Integer triggersTerms = getTriggersCount(listNotes);
 
         String sex = patient.getSex();
-        Integer age = Period.between(patient.getBirthDate(), LocalDate.now()).getYears();
+        int age = Period.between(patient.getBirthDate(), LocalDate.now()).getYears();
 
         // ********** ALGORITHME ****************
         if (age < 30) {
@@ -69,15 +80,15 @@ public class AssessmentService {
     }
 
     // Comptage Nb Termes déclencheur dans les notes d'un patient
-    private Integer getTriggersCount(List<Note> listNotes) {
-        // TODO
+    private Integer getTriggersCount(List<NoteBean> listNotes) {
         int count = 0;
         List<String> countedTriggers = new ArrayList<>();
 
-        for (Note note : listNotes) {
+        for (NoteBean note : listNotes) {
             //List<String> triggers = readTriggersFromFile();
             for (String trigger : triggersList) {
-                if (note.getNote().toLowerCase().contains(trigger.toLowerCase()) && !countedTriggers.contains(trigger.toLowerCase())) {
+                if (note.getDoctorNote().toLowerCase().contains(trigger.toLowerCase())
+                        && !countedTriggers.contains(trigger.toLowerCase())) {
                     count++;
                     countedTriggers.add(trigger.toLowerCase());
                 }
