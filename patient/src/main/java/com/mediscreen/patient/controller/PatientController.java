@@ -46,4 +46,9 @@ public class PatientController {
         patientService.deletePatient(patientId);
     }
 
+    @PostMapping(value = "/patients/exist")
+    public Boolean existPatient(@Valid @RequestBody Patient patient) {
+        return patientService.checkExistsPatient(patient.getLastName(), patient.getFirstName(), patient.getBirthDate());
+    }
+
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Patients</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <a href="/">Home</a>&nbsp;|&nbsp;
+            <a href="/patients">Patients</a>&nbsp;|&nbsp;
+            <!--<a href="/curvePoint/list">Curve Points</a>&nbsp;|&nbsp;
+            <a href="/rating/list">Ratings</a>&nbsp;|&nbsp;
+            <a href="/trade/list">Trade</a>&nbsp;|&nbsp;
+            <a href="/ruleName/list">Rule</a>-->
+        </div>
+        <!--<div class="col-6 text-right">
+            Logged in user: <b th:inline="text" class="user" th:text="${username}"> </b>
+            <form th:action="@{/app-logout}" method="POST">
+                <input type="submit" value="Logout"/>
+            </form>
+        </div>-->
+    </div>
+    <div class="row"><h2>Patients List</h2></div>
+    <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorDeleteMessage)}" th:text="${errorDeleteMessage}"></p>
+    <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorCreateMessage)}" th:text="${errorCreateMessage}"></p>
+    <p class="alert alert-success" th:if="${!#strings.isEmpty(successDeleteMessage)}"
+       th:text="${successDeleteMessage}"></p>
+    <p class="alert alert-success" th:if="${!#strings.isEmpty(successUpdateMessage)}"
+       th:text="${successUpdateMessage}"></p>
+    <p class="alert alert-success" th:if="${!#strings.isEmpty(successSaveMessage)}" th:text="${successSaveMessage}"></p>
+    <div class="row">
+        <a href="/patient/add" class="btn btn-primary btn-sm">Add New</a>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Birth Date</th>
+                <th>Sex</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="patient : ${patients}">
+                <td><span th:text="${patient.lastName}"></span></td>
+                <td><span th:text="${patient.firstName}"></span></td>
+                <td><span th:text="${patient.birthDate}"></span></td>
+                <td><span th:text="${patient.sex}"></span></td>
+                <td><span th:text="${patient.address}"></span></td>
+                <td><span th:text="${patient.phoneNumber}"></span></td>
+                <td style="width: 15%" class="text-center">
+                    <a th:href="@{/curvePoint/update/{id}(id=${patient.id})}">Select</a>&nbsp;|&nbsp;
+                    <a th:href="@{/patients/delete/{id}(id=${patient.id})}"
+                       onclick="return confirm('Do you confirm the deletion ?')">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

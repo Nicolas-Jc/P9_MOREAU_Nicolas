@@ -21,7 +21,7 @@ public class AssessmentService {
 
     // Récupération Liste termes déclencheurs
     @Value("#{${triggers}}")
-    private List<String> triggersList;
+    List<String> triggersList;
 
     @Autowired
     private NotesProxy microserviceNotesProxy;
@@ -31,16 +31,16 @@ public class AssessmentService {
 
     public String diabeteAssessment(Integer patientId) {
 
-        String diabeteAssessment = "";
+        String diabeteAssessment = RiskLevel.LEVEL_0.getMessage();
 
         PatientBean patient = microservicePatientsProxy.getPatientById(patientId);
         // récupération ensemble des notes d'un patient
         List<NoteBean> listNotes = microserviceNotesProxy.getNotesByPatient(patientId);
-        // Comptage Nb de Termes déclencheurs
-        Integer triggersTerms = getTriggersCount(listNotes);
-
         String sex = patient.getSex();
         int age = Period.between(patient.getBirthDate(), LocalDate.now()).getYears();
+
+        // Comptage Nb de Termes déclencheurs
+        Integer triggersTerms = getTriggersCount(listNotes);
 
         // ********** ALGORITHME ****************
         if (age < 30) {
@@ -85,7 +85,6 @@ public class AssessmentService {
         List<String> countedTriggers = new ArrayList<>();
 
         for (NoteBean note : listNotes) {
-            //List<String> triggers = readTriggersFromFile();
             for (String trigger : triggersList) {
                 if (note.getDoctorNote().toLowerCase().contains(trigger.toLowerCase())
                         && !countedTriggers.contains(trigger.toLowerCase())) {
@@ -95,6 +94,5 @@ public class AssessmentService {
             }
         }
         return count;
-
     }
 }

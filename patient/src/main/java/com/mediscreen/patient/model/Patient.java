@@ -22,31 +22,37 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Size(max = 50)
+    @Size(min = 1, max = 50)
     @NotBlank(message = "Last Name is mandatory")
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Size(max = 50)
+    @Size(min = 1, max = 50)
     @NotBlank(message = "First Name is mandatory")
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Birth Date is mandatory")
-    @Column(name = "birthdate")
+    @Column(name = "birthdate", nullable = false)
     private LocalDate birthDate;
 
     @Size(max = 1)
     @Pattern(regexp = "^[M|F]$", message = "M : Male / F : Female")
+/*
+    @NotBlank(message = "Sex is mandatory")
+*/
+    @Pattern(regexp = "[FM]")
+    @Column(nullable = false, length = 1)
     @NotBlank(message = "Sex is mandatory")
     private String sex;
 
     @Size(max = 200)
+    @Column(length = 200)
     private String address;
 
     @Size(max = 30)
-    @Column(name = "phone")
+    @Column(name = "phone", length = 20)
     // Pattern : "111-222-333"
     // @Pattern(regexp = "^(33|0)(6|7|9)\\d{8}$"
     //, message = "Please Enter a valid phone number")

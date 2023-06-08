@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Add New Patient</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h2>Add New Patient</h2>
+    </div>
+    <div class="row">
+        <form action="#" th:action="@{/patient/validate}" th:object="${patient}" method="post"
+              class="form-horizontal" style="width: 100%">
+            <div class="text-danger validation-summary-valid" data-valmsg-summary="true">
+                <ul th:if="${#fields.hasErrors('*')}">
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Problem in the input data</li>
+                </ul>
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-10">
+                    <input type="text" th:field="*{lastName}" id="lastName" placeholder="Mandatory" class="col-4">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="firstName" class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-10">
+                    <input type="text" th:field="*{firstName}" id="firstName" placeholder="Mandatory" class="col-4">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="birthDate" class="col-sm-2 control-label">Birth Date</label>
+                <div class="col-sm-10">
+                    <input type="date" th:field="*{birthDate}" id="birthDate" placeholder="Mandatory" class="col-4">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Sex</label>
+                <div class="col-sm-10">
+                    <!--
+                                        <input type="text" th:field="*{sex}" id="sex" placeholder="Mandatory" class="col-4">
+                    -->
+                    <input th:field="*{sex}" type="radio" name="sex" value="M" id="male"/> <label
+                        for="male">Male</label>
+                    <input th:field="*{sex}" type="radio" name="sex" value="F" id="female"/> <label
+                        for="female">Female</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address" class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-10">
+                    <input type="text" th:field="*{address}" id="address" placeholder="Address" class="col-4">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber" class="col-sm-2 control-label">Phone Number</label>
+                <div class="col-sm-10">
+                    <input type="text" th:field="*{phoneNumber}" id="phoneNumber" placeholder="Phone Number"
+                           class="col-4">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <a class="btn btn-danger btn-sm" href="/patients">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add Patient">
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

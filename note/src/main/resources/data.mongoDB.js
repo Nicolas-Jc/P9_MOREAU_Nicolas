@@ -4,55 +4,55 @@ db.note.insert(
             "_id": ObjectId("6177a31824f1d205e0b0692d"),
             "noteDate": "2001-01-01",
             "patientId": 1,
-            "doctorNote": "Patient: TestNone Practitioner's notes/recommendations: Patient states that they are 'feeling terrific' Weight at or below recommended level"
+            "doctorNote": "Patient: TestNone Notes/recommandations du praticien : Le patient déclare qu'il se sent en pleine forme Poids égal ou inférieur au niveau recommandé"
         },
         {
             "_id": ObjectId("6177a3648207e0587345067a"),
             "noteDate": "2002-02-01",
             "patientId": 2,
-            "doctorNote": "Patient: TestBorderline Practitioner's notes/recommendations: Patient states that they are feeling a great deal of stress at work Patient also complains that their hearing seems Abnormal as of late"
+            "doctorNote": "Patient: TestBorderline Notes/recommandations du praticien : Le patient déclare qu'il ressent beaucoup de stress au travail Le patient se plaint également que son audition semble anormal depuis quelque temps"
         },
         {
             "_id": ObjectId("6177a39b665edf352cf74f90"),
             "noteDate": "2002-02-02",
             "patientId": 2,
-            "doctorNote": "Patient: TestBorderline Practitioner's notes/recommendations: Patient states that they have had a Reaction to medication within last 3 months Patient also complains that their hearing continues to be problematic"
+            "doctorNote": "Patient: TestBorderline Notes/recommandations du praticien : Le patient signale qu'il a fait une réaction à un médicament au cours des 3 derniers mois Le patient se plaint également que son audition continue d'être problématique"
         },
         {
             "_id": ObjectId("6178f9e3c2533871717abaf2"),
             "noteDate": "2003-03-01",
             "patientId": 3,
-            "doctorNote": "Patient: TestInDanger Practitioner's notes/recommendations: Patient states that they are short term Smoker "
+            "doctorNote": "Patient: TestInDanger Notes/recommandations du praticien : Le patient déclare qu'il est fumeur à court terme."
         },
         {
             "_id": ObjectId("6178fa80b2162e1fd560e33f"),
             "noteDate": "2003-03-02",
             "patientId": 3,
-            "doctorNote": "Patient: TestInDanger Practitioner's notes/recommendations: Patient states that they quit within last year Patient also complains that of Abnormal breathing spells Lab reports Cholesterol LDL high"
+            "doctorNote": "Patient: TestInDanger Notes/recommandations du praticien : Le patient déclare qu'il a arrêté de fumer au cours de l'année écoulée Le patient se plaint également de respirations anormales Rapports de laboratoire Cholestérol LDL élevé"
         },
         {
             "_id": ObjectId("618244a55ec6eb500c8b5be0"),
             "noteDate": "2004-04-01",
             "patientId": 4,
-            "doctorNote": "Patient: TestEarlyOnset Practitioner's notes/recommendations: Patient states that walking up stairs has become difficult Patient also complains that they are having shortness of breath Lab results indicate Antibodies present elevated Reaction to medication"
+            "doctorNote": "Patient: TestEarlyOnset Notes/recommandations du praticien : Le patient déclare qu'il lui est devenu difficile de monter les escaliers Le patient se plaint également d'avoir le souffle court Les résultats de laboratoire indiquent la présence d'anticorps élevés Réaction aux médicaments"
         },
         {
             "_id": ObjectId("618273e087deb21060318688"),
             "noteDate": "2004-04-02",
             "patientId": 4,
-            "doctorNote": "Patient: TestEarlyOnset Practitioner's notes/recommendations: Patient states that they are experiencing back pain when seated for a long time"
+            "doctorNote": "Patient: TestEarlyOnset Notes/recommandations du praticien : Le patient déclare qu'il a mal au dos lorsqu'il est assis pendant une longue période."
         },
         {
             "_id": ObjectId("6192c22d783f4a2a0a7d9bf3"),
             "noteDate": "2004-04-03",
             "patientId": 4,
-            "doctorNote": "Patient: TestEarlyOnset Practitioner's notes/recommendations: Patient states that they are a short term Smoker Hemoglobin A1C above recommended level"
+            "doctorNote": "Patient: TestEarlyOnset Notes/recommandations du praticien : Le patient déclare qu'il est fumeur à court terme Hémoglobine A1C supérieure au niveau recommandé"
         },
         {
             "_id": ObjectId("6192c3d0783f4a2a0a7d9bf4"),
             "noteDate": "2004-04-04",
             "patientId": 4,
-            "doctorNote": "Patient: TestEarlyOnset Practitioner's notes/recommendations: Patient states that Body Height, Body Weight, Cholesterol, Dizziness and Reaction"
+            "doctorNote": "Patient: TestEarlyOnset Notes/recommandations du praticien : Le patient déclare que sa taille, son poids, son taux de cholestérol, ses vertiges et ses réactions ne sont pas satisfaisants."
         },
         {
             "_id": ObjectId("64783c6d3236c1aef30e6190"),

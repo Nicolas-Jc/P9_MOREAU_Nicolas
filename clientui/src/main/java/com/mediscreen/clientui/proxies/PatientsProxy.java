@@ -4,6 +4,7 @@ import com.mediscreen.clientui.beans.PatientBean;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @FeignClient(name = "microservice-patients", url = "${microservice-patients.url}")
@@ -23,4 +24,8 @@ public interface PatientsProxy {
 
     @DeleteMapping("/patients/delete/{id}")
     void deletePatient(@PathVariable("id") final Integer patientId);
+
+    @PostMapping("/patients/exist")
+    Boolean checkExistPatient(@RequestBody PatientBean patient);
+
 }

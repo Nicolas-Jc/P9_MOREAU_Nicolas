@@ -10,7 +10,7 @@ CREATE TABLE patient
     id         int         NOT NULL AUTO_INCREMENT PRIMARY KEY,
     last_name  VARCHAR(50) NOT NULL,
     first_name VARCHAR(50) NOT NULL,
-    birthdate  VARCHAR(10) NOT NULL,
+    birthdate  DATE        NOT NULL,
     sex        VARCHAR(1)  NOT NULL,
     address    VARCHAR(200),
     phone      VARCHAR(30)
