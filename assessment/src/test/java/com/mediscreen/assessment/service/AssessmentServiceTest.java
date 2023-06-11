@@ -3,8 +3,7 @@ package com.mediscreen.assessment.service;
 import com.mediscreen.assessment.beans.NoteBean;
 import com.mediscreen.assessment.beans.PatientBean;
 
-import com.mediscreen.assessment.model.Note;
-import com.mediscreen.assessment.model.Patient;
+
 import com.mediscreen.assessment.proxies.NotesProxy;
 import com.mediscreen.assessment.proxies.PatientsProxy;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc

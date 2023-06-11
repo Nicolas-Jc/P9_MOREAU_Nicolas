@@ -12,6 +12,9 @@ public class NoteBean {
 
     private String doctorNote;
 
+    public NoteBean(String s, int i, LocalDate minusYears, String noteSansMotDeclencheur) {
+    }
+
     public String getId() {
         return id;
     }

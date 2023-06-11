@@ -19,6 +19,9 @@ public class PatientBean {
 
     private String phoneNumber;
 
+    public PatientBean(int i, String lastName, String firstname, LocalDate minusYears, String f, String testAdress, String s) {
+    }
+
     public Integer getId() {
         return id;
     }
