@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +46,10 @@ public class NoteService {
 
     public Note addNote(Note noteToAdd) {
         logger.debug("Service : addNote - called");
+        /*LocalDate currentDate = LocalDate.now(Clock.systemUTC());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = currentDate.format(dateTimeFormatter);
+        noteToAdd.setNoteDate(formattedDate);*/
         noteToAdd.setId(null);
         Note noteToSave = noteRepository.insert(noteToAdd);
         logger.debug("Service : addNote - succes");

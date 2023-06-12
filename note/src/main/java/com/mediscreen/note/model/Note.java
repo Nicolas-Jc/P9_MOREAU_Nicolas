@@ -16,18 +16,18 @@ public class Note {
     private Integer patientId;
 
     @NotNull
-    private LocalDate noteDate;
+    private String noteDate;
 
     @NotBlank(message = "Note content is mandatory")
     private String doctorNote;
 
-    public Note(Integer patientId, LocalDate noteDate, String doctorNote) {
+    public Note(Integer patientId, String noteDate, String doctorNote) {
         this.patientId = patientId;
         this.noteDate = noteDate;
         this.doctorNote = doctorNote;
     }
 
-    public Note(String id, Integer patientId, LocalDate noteDate, String doctorNote) {
+    public Note(String id, Integer patientId, String noteDate, String doctorNote) {
         this.id = id;
         this.patientId = patientId;
         this.noteDate = noteDate;
@@ -53,11 +53,11 @@ public class Note {
         this.patientId = patientId;
     }
 
-    public LocalDate getNoteDate() {
+    public String getNoteDate() {
         return noteDate;
     }
 
-    public void setNoteDate(LocalDate noteDate) {
+    public void setNoteDate(String noteDate) {
         this.noteDate = noteDate;
     }
 

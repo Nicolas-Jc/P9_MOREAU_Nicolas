@@ -42,9 +42,9 @@ public class NoteServiceTest {
     @Test
     void getAllNotesTest() {
         // GIVEN
-        note1 = new Note(1, LocalDate.of(2000, 1, 1), "Comment Note1");
-        note2 = new Note(2, LocalDate.of(2000, 2, 2), "Comment Note2");
-        note3 = new Note(3, LocalDate.of(2000, 3, 3), "Comment Note3");
+        note1 = new Note(1, "2000-01-01", "Comment Note1");
+        note2 = new Note(2, "2000-02-02", "Comment Note2");
+        note3 = new Note(3, "2000-03-03", "Comment Note3");
 
         listNote = new ArrayList<>();
         listNote.add(note1);
@@ -62,7 +62,7 @@ public class NoteServiceTest {
     @Test
     void getNoteByIdTest() {
         // GIVEN
-        Note note = new Note(10, LocalDate.of(2010, 10, 10), "Comment Note Patient 10");
+        Note note = new Note(10, "2010-10-10", "Comment Note Patient 10");
         when(noteRepository.findById("33")).thenReturn(Optional.of(note));
         // WHEN
         Optional<Note> results = noteService.getNoteById("33");
@@ -79,9 +79,9 @@ public class NoteServiceTest {
     @Test
     void getNotesByPatientIdTest() {
         // GIVEN
-        note1 = new Note(44, LocalDate.of(2000, 1, 1), "Comment Note1");
-        note2 = new Note(44, LocalDate.of(2000, 2, 2), "Comment Note2");
-        note3 = new Note(44, LocalDate.of(2000, 3, 3), "Comment Note3");
+        note1 = new Note(44, "2000-01-01", "Comment Note1");
+        note2 = new Note(44, "2000-02-02", "Comment Note2");
+        note3 = new Note(44, "2000-02-03", "Comment Note3");
         listNote = new ArrayList<>();
         listNote.add(note1);
         listNote.add(note2);
@@ -97,7 +97,7 @@ public class NoteServiceTest {
     @Test
     void addNoteTest() {
         //GIVEN
-        Note note5 = new Note("XXXXXXXXXXXXXXXXXXXXXXX", 11, LocalDate.of(2010, 10, 10), "Comment Note Patient 11");
+        Note note5 = new Note("XXXXXXXXXXXXXXXXXXXXXXX", 11, "2010-10-10", "Comment Note Patient 11");
         //WHEN
         //when(noteRepository.i(note5)).thenReturn(note5);
         when(noteRepository.insert(any(Note.class))).thenReturn(note5);
@@ -109,7 +109,7 @@ public class NoteServiceTest {
     @Test
     void updateNoteTest() {
         //GIVEN
-        note1 = new Note(5, LocalDate.of(2005, 05, 05), "Comment Note Patient 5");
+        note1 = new Note(5, "2005-05-05", "Comment Note Patient 5");
         note1.setId("XXX");
         when(noteRepository.save(note1)).thenReturn(note1);
         when(noteRepository.findById("XXX")).thenReturn(Optional.of(note1));
@@ -123,13 +123,13 @@ public class NoteServiceTest {
     public void updateNoteButIdIsNullTest() {
         assertThrows(ResponseStatusException.class, ()
                 -> noteService.updateNote(
-                new Note("XXXXXXXXXXXXXXXXXXXXXX", 11, LocalDate.of(2010, 10, 10), "Comment Note Patient 11")));
+                new Note("XXXXXXXXXXXXXXXXXXXXXX", 11, "2010-10-10", "Comment Note Patient 11")));
     }
 
     @Test
     void deleteNoteByIdTest() {
         //GIVEN
-        note1 = new Note(1, LocalDate.of(2000, 1, 1), "Comment Note1");
+        note1 = new Note(1, "2000-01-01", "Comment Note1");
         note1.setId("ZZZZZZZZZZ");
         when(noteRepository.existsById("ZZZZZZZZZZ")).thenReturn(Boolean.TRUE);
         // WHEN
@@ -147,12 +147,12 @@ public class NoteServiceTest {
     @Test
     void deleteAllNoteByPatientIdTest() {
         //GIVEN
-        note1 = new Note(1, LocalDate.of(2000, 1, 1), "Comment Note1");
-        note2 = new Note(2, LocalDate.of(2000, 2, 2), "Comment Note2");
-        note3 = new Note(2, LocalDate.of(2000, 3, 3), "Comment Note3");
-        Note note4 = new Note(3, LocalDate.of(2000, 3, 3), "Comment Note4");
-        Note note5 = new Note(3, LocalDate.of(2000, 3, 3), "Comment Note5");
-        Note note6 = new Note(3, LocalDate.of(2000, 3, 3), "Comment Note6");
+        note1 = new Note(1, "2000-01-01", "Comment Note1");
+        note2 = new Note(2, "2000-02-02", "Comment Note2");
+        note3 = new Note(2, "2000-03-03", "Comment Note3");
+        Note note4 = new Note(3, "2000-03-03", "Comment Note4");
+        Note note5 = new Note(3, "2000-03-03", "Comment Note5");
+        Note note6 = new Note(3, "2000-03-03", "Comment Note6");
         // WHEN
         noteService.deleteAllNotesByPatientId(2);
         // THEN

@@ -1,15 +1,20 @@
 package com.mediscreen.clientui.beans;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class NoteBean {
 
     private String id;
 
+    @NotNull
     private Integer patientId;
 
-    private LocalDate noteDate;
+    //@NotBlank
+    private String noteDate;
 
+    @NotBlank
     private String doctorNote;
 
     public String getId() {
@@ -28,11 +33,11 @@ public class NoteBean {
         this.patientId = patientId;
     }
 
-    public LocalDate getNoteDate() {
+    public String getNoteDate() {
         return noteDate;
     }
 
-    public void setNoteDate(LocalDate noteDate) {
+    public void setNoteDate(String noteDate) {
         this.noteDate = noteDate;
     }
 
@@ -41,6 +46,16 @@ public class NoteBean {
     }
 
     public void setDoctorNote(String doctorNote) {
+        this.doctorNote = doctorNote;
+    }
+
+    public NoteBean() {
+    }
+
+    public NoteBean(String id, Integer patientId, String noteDate, String doctorNote) {
+        this.id = id;
+        this.patientId = patientId;
+        this.noteDate = noteDate;
         this.doctorNote = doctorNote;
     }
 
@@ -53,4 +68,6 @@ public class NoteBean {
                 ", doctorNote='" + doctorNote + '\'' +
                 '}';
     }
+
+
 }

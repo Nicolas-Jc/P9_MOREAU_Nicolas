@@ -19,7 +19,7 @@ public interface NotesProxy {
     NoteBean addNote(@RequestBody final NoteBean noteToAdd);
 
     @PutMapping("/notes")
-    NoteBean updatePatient(@RequestBody NoteBean patientToUpdate);
+    NoteBean updateNote(@RequestBody NoteBean noteToUpdate);
 
     @DeleteMapping("/notes/delete/{id}")
     void deleteNote(@PathVariable("id") final String noteId);

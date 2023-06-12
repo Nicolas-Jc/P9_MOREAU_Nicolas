@@ -2,6 +2,8 @@ package com.mediscreen.note.controller;
 
 import com.mediscreen.note.model.Note;
 import com.mediscreen.note.service.NoteService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -10,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 public class NoteController {
+
 
     private final NoteService noteService;
 
@@ -29,12 +32,13 @@ public class NoteController {
 
     @PostMapping("/notes/add")
     public Note addNote(@Valid @RequestBody final Note noteToAdd) {
+        System.out.println("@PostMapping(\"/notes/add\") dans NoteController Module Note");
         return noteService.addNote(noteToAdd);
     }
 
     @PutMapping("/notes")
-    public Note updatePatient(@Valid @RequestBody Note patientToUpdate) {
-        return noteService.updateNote(patientToUpdate);
+    public Note updateNote(@Valid @RequestBody Note noteToUpdate) {
+        return noteService.updateNote(noteToUpdate);
     }
 
     @DeleteMapping("/notes/delete/{id}")

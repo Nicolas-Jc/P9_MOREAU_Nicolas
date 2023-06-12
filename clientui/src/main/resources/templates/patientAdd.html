@@ -25,6 +25,8 @@
                      <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Problem in the input data</li>
                  </ul>
              </div>-->
+            <input type="hidden" th:field="*{id}"/>
+
             <div class="form-group">
                 <label for="lastName" class="col-sm-2 control-label">Last Name</label>
                 <div class="col-sm-10">
@@ -92,7 +94,7 @@
             <div class="form-group">
                 <div class="col-sm-12">
                     <a class="btn btn-danger btn-sm" href="/patients">Cancel</a>
-                    <input class="btn btn-primary btn-sm" type="submit" value="Add Patient">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Save">
                 </div>
             </div>
         </form>

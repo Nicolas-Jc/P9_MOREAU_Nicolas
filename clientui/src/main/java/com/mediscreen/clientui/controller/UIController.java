@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -56,10 +60,21 @@ public class UIController {
     }
 
     // view Patient/add
-    @GetMapping("/patient/add")
+   /* @GetMapping("/patient/add")
     public String addPatientForm(Model model) {
         model.addAttribute("patient", new PatientBean());
         logger.info("View Patient Add loaded");
+        return "patientAdd";
+    }*/
+
+    @GetMapping("/patientAdd")
+    public String showPatientForm(@RequestParam(required = false) Integer id, Model model) {
+
+        if (id == null) {
+            model.addAttribute("patient", new PatientBean());
+        } else {
+            model.addAttribute("patient", patientsProxy.getPatientById(id));
+        }
         return "patientAdd";
     }
 
@@ -72,8 +87,8 @@ public class UIController {
             return "patientAdd";
         }
 
-        // Cas Patient dejà en BDD
-        if (patientsProxy.checkExistPatient(patientBean).equals(Boolean.TRUE)) {
+        // Cas creation Patient dejà en BDD
+        if (patientBean.getId() == null && patientsProxy.checkExistPatient(patientBean).equals(Boolean.TRUE)) {
             /*redirAttrs.addFlashAttribute("errorCreateMessage",
                     "This patient already exists in the database");*/
             result.rejectValue("lastName", "", "This patient already exists in the database");
@@ -87,6 +102,9 @@ public class UIController {
             redirAttrs.addFlashAttribute("successSaveMessage",
                     "Patient successfully added to list");
             return "redirect:/patients";
+        } else {
+            patientsProxy.updatePatient(patientBean);
+            return "redirect:/patients/" + patientBean.getId();
         }
 
       /*  if (!result.hasErrors()) {
@@ -100,7 +118,7 @@ public class UIController {
                     "This patient already exists in the database");
             logger.error("Error creation Patient");
         }*/
-        return "patientAdd";
+        //return "patientAdd";
     }
 
     @GetMapping("/patients/delete/{id}")
@@ -150,12 +168,29 @@ public class UIController {
     }*/
 
     // view Note/add
-    @GetMapping("/noteAdd")
+  /*  @GetMapping("/noteAdd")
     public String addNoteForm(Model model) {
         model.addAttribute("note", new NoteBean());
         logger.info("View Note Add loaded");
         return "noteAdd";
+
+    }*/
+
+    // view Note add-update
+    @GetMapping("/noteAdd")
+    public String showNoteForm(@RequestParam(required = false) String id,
+                               @RequestParam Integer patientId, Model model) {
+
+        if (id == null) {
+            NoteBean newNoteBean = new NoteBean();
+            newNoteBean.setPatientId(patientId);
+            model.addAttribute("note", newNoteBean);
+        } else {
+            model.addAttribute("note", notesProxy.getNote(id));
+        }
+        return "noteAdd";
     }
+
 
     @PostMapping("/noteAdd")
     public String validate(@Valid @ModelAttribute("note") NoteBean noteBean,
@@ -165,24 +200,27 @@ public class UIController {
             return "noteAdd";
         }
 
-      /*  // Cas Patient dejà en BDD
-        if (patientsProxy.checkExistPatient(noteBean).equals(Boolean.TRUE)) {
-            *//*redirAttrs.addFlashAttribute("errorCreateMessage",
-                    "This patient already exists in the database");*//*
-            result.rejectValue("lastName", "", "This patient already exists in the database");
-            result.rejectValue("firstName", "", "This patient already exists in the database");
-            result.rejectValue("birthDate", "", "This patient already exists in the database");
-            return "patientAdd";
-        }*/
-
-        if (noteBean.getId() == null) {
+        if (noteBean.getId() == null || noteBean.getId().equals("")) {
+            //noteBean.setId("6178f9e3c2533871717abaf2");
+            //noteBean.setNoteDate("2000-03-03");
+            LocalDate currentDate = LocalDate.now(Clock.systemUTC());
+            //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            noteBean.setNoteDate(formattedDate);
             notesProxy.addNote(noteBean);
             redirAttrs.addFlashAttribute("successSaveMessage",
                     "Note successfully added to list");
-            return "redirect:/patientNotesAss";
+            //return "redirect:/patientNotesAss";
+            return "redirect:/patients/" + noteBean.getPatientId();
+        } else {
+            notesProxy.updateNote(noteBean);
+            redirAttrs.addFlashAttribute("successSaveMessage",
+                    "Note successfully updated");
+            return "redirect:/patients/" + noteBean.getPatientId();
         }
+        //return "noteAdd";
+        //return "redirect:/patients/" + noteBean.getPatientId();
 
-        return "noteAdd";
     }
 
    /* @GetMapping(value = "/patients/{id}/diabeteAssess",
@@ -204,5 +242,29 @@ public class UIController {
         return "patients";
     }
 
+    @DeleteMapping("/notes/delete/{id}")
+    public String deleteNote(@PathVariable("id") Integer id, Model model, RedirectAttributes redirAttrs) {
+        try {
+           /* if (!patientsProxy.getPatientById(id)) {
+                logger.error("Patient {} cannot be found'", id);
+                return "redirect:/patients";
+            }*/
+            patientsProxy.deletePatient(id);
+            notesProxy.deleteAllPatientNotes(id);
+            model.addAttribute("patients", patientsProxy.getAllPatients());
+            redirAttrs.addFlashAttribute("successDeleteMessage", "Patient successfully deleted");
+        } catch (Exception e) {
+            redirAttrs.addFlashAttribute("errorDeleteMessage", "Error during deletion");
+            logger.error("Error to delete \"Patient\" : {}", id);
+        }
+        return "redirect:/patients";
+    }
+
+    @PostMapping("/patients/{patientId}/notes/delete/{id}")
+    public String deleteNote(@PathVariable Integer patientId, @PathVariable String id) {
+
+        notesProxy.deleteNote(id);
+        return "redirect:/patients/" + patientId;
+    }
 
 }

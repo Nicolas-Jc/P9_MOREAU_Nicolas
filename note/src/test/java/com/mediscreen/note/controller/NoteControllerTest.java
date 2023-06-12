@@ -53,9 +53,9 @@ class NoteControllerTest {
 
     @BeforeEach
     void setup() {
-        note1 = new Note("noteId1", 1, LocalDate.of(2000, 1, 1), "Comment Note1");
-        note2 = new Note("noteId2", 2, LocalDate.of(2000, 2, 2), "Comment Note2");
-        note3 = new Note("noteId3", 3, LocalDate.of(2000, 3, 3), "Comment Note3");
+        note1 = new Note("noteId1", 1, "2000-01-01", "Comment Note1");
+        note2 = new Note("noteId2", 2, "2000-02-02", "Comment Note2");
+        note3 = new Note("noteId3", 3, "2000-03-03", "Comment Note3");
 
         listNote = new ArrayList<>();
         listNote.add(note1);

@@ -119,14 +119,16 @@
         </thead>
         <tbody>
         <tr th:each="patientNote : ${listNotes}">
-            <td class="whitespaceprewrap" th:text="${patientNote.doctorNote}"></td>
+            <td th:text="${patientNote.doctorNote}"></td>
             <td>
                 <form method="post" action="#"
-                      th:action="@{'/patients/{patId}/notes/delete/{id}'(patId=${patientNote.patientId},id=${patientNote.id})}"
+                      th:action="@{'/patients/{patientId}/notes/delete/{id}'(patientId=${patientNote.patientId},id=${patientNote.id})}"
                       class="form-inline justify-content-end">
                     <a href="#" class="btn btn-info" role="button"
-                       th:href="@{/noteAdd(id=${patientNote.id},patId=${patientNote.patientId})}">Update</a>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                       th:href="@{/noteAdd(id=${patientNote.id},patientId=${patientNote.patientId})}">Update</a>
+                    <button type="submit" class="btn btn-danger"
+                            onclick="return confirm('Do you confirm the deletion ?')">Delete
+                    </button>
                 </form>
             </td>
         </tr>
