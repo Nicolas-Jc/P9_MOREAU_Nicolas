@@ -25,9 +25,11 @@ public class UIControllerTest {
     PatientBean patientBean1;
     PatientBean patientBean2;
     List<PatientBean> listPatientsBean;
+
     NoteBean noteBean1;
     NoteBean noteBean2;
     List<NoteBean> listNoteBean;
+
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -39,6 +41,7 @@ public class UIControllerTest {
     void before() {
         patientBean1 = new PatientBean("lastName1", "firstName1", LocalDate.of(2001, 1, 1), "M", "1st street Miami", "11.11.11.11.11");
         patientBean2 = new PatientBean("lastName2", "firstName2", LocalDate.of(2002, 2, 2), "F", "2nd street Miami", "22.22.22.22.22");
+        listPatientsBean = new ArrayList<>();
         listPatientsBean.add(patientBean1);
         listPatientsBean.add(patientBean2);
 

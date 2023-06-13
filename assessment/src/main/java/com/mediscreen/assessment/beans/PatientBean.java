@@ -19,7 +19,15 @@ public class PatientBean {
 
     private String phoneNumber;
 
-    public PatientBean(int i, String lastName, String firstname, LocalDate minusYears, String f, String testAdress, String s) {
+    public PatientBean(Integer id, String lastName, String firstName,
+                       LocalDate birthDate, String sex, String address, String phoneNumber) {
+        this.id = id;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
     public Integer getId() {

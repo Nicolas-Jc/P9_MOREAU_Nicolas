@@ -12,7 +12,11 @@ public class NoteBean {
 
     private String doctorNote;
 
-    public NoteBean(String s, int i, String minusYears, String noteSansMotDeclencheur) {
+    public NoteBean(String id, Integer patientId, String noteDate, String doctorNote) {
+        this.id = id;
+        this.patientId = patientId;
+        this.noteDate = noteDate;
+        this.doctorNote = doctorNote;
     }
 
     public String getId() {

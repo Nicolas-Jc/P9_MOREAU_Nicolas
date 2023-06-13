@@ -35,8 +35,8 @@ public class UIController {
     @Autowired
     private NotesProxy notesProxy;
 
-    @Autowired
-    private AssessmentProxy assessmentProxy;
+    /*@Autowired
+    private AssessmentProxy assessmentProxy;*/
 
     private static final Logger logger = LogManager.getLogger(UIController.class);
 
@@ -131,9 +131,9 @@ public class UIController {
         List<NoteBean> listNotes = notesProxy.getNotesByPatient(id);
         model.addAttribute("listNotes", listNotes);
         // Charge le résultat Risque Diabete
-        String diabetesResult = assessmentProxy.getRiskLevelByPatient(id);
+        /*String diabetesResult = assessmentProxy.getRiskLevelByPatient(id);
         logger.info("diabetesResult : {}", diabetesResult);
-        model.addAttribute("diabeteResult", diabetesResult);
+        model.addAttribute("diabeteResult", diabetesResult);*/
 
         return "patientNotesAss";
     }
@@ -218,7 +218,7 @@ public class UIController {
     }*/
 
     // **************** A REVOIR ******************************************
-    @GetMapping("/assessment/{id}")
+    /*@GetMapping("/assessment/{id}")
     public String showDiabeteAssessment(@PathVariable Integer id, Model model) {
         //get all patients:
         String assessment = assessmentProxy.getRiskLevelByPatient(id);
@@ -227,7 +227,7 @@ public class UIController {
         //Map<Integer, Integer> mapCountOfNotesPerPatient = notesProxy.getCountOfNotesPerPatient();
         //model.addAttribute("mapcountnote", mapCountOfNotesPerPatient);
         return "patients";
-    }
+    }*/
 
     @DeleteMapping("/notes/delete/{id}")
     public String deleteNote(@PathVariable("id") Integer id, Model model, RedirectAttributes redirAttrs) {

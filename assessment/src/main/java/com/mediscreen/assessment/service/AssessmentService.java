@@ -72,15 +72,16 @@ public class AssessmentService {
         diabeteAssessment = (diabeteAssessment != null) ? diabeteAssessment : RiskLevel.LEVEL_0.getMessage();
         // Mise en forme réponse
         return "Patient: "
-                + patient.getFirstName()
-                + " "
                 + patient.getLastName()
+                + " "
+                + patient.getFirstName()
                 + " (age " + age + ") diabetes assessment is: "
                 + diabeteAssessment;
     }
 
     // Comptage Nb Termes déclencheur dans les notes d'un patient
     private Integer getTriggersCount(List<NoteBean> listNotes) {
+
         int count = 0;
         List<String> countedTriggers = new ArrayList<>();
 
