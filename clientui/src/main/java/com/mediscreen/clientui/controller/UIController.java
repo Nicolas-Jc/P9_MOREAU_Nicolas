@@ -1,6 +1,5 @@
 package com.mediscreen.clientui.controller;
 
-import com.mediscreen.clientui.beans.AssessmentBean;
 import com.mediscreen.clientui.beans.NoteBean;
 import com.mediscreen.clientui.beans.PatientBean;
 import com.mediscreen.clientui.proxies.AssessmentProxy;
@@ -107,27 +106,11 @@ public class UIController {
             return "redirect:/patients/" + patientBean.getId();
         }
 
-      /*  if (!result.hasErrors()) {
-            patientsProxy.addPatient(patientBean);
-            redirAttrs.addFlashAttribute("successSaveMessage",
-                    "Patient successfully added to list");
-            return "redirect:/patients";
-        }*/
-        /*if (patientsProxy.checkExistPatient(patientBean).equals(Boolean.TRUE)) {
-            redirAttrs.addFlashAttribute("errorDeleteMessage",
-                    "This patient already exists in the database");
-            logger.error("Error creation Patient");
-        }*/
-        //return "patientAdd";
     }
 
     @GetMapping("/patients/delete/{id}")
     public String deletePatient(@PathVariable("id") Integer id, Model model, RedirectAttributes redirAttrs) {
         try {
-           /* if (!patientsProxy.getPatientById(id)) {
-                logger.error("Patient {} cannot be found'", id);
-                return "redirect:/patients";
-            }*/
             patientsProxy.deletePatient(id);
             notesProxy.deleteAllPatientNotes(id);
             model.addAttribute("patients", patientsProxy.getAllPatients());
@@ -141,12 +124,16 @@ public class UIController {
 
     @GetMapping("/patients/{id}")
     public String patientNotes(@PathVariable Integer id, Model model) {
-
+        // Charge les infos du patient
         PatientBean patient = patientsProxy.getPatientById(id);
         model.addAttribute("patient", patient);
         // Charge la Liste des Notes du Patient
         List<NoteBean> listNotes = notesProxy.getNotesByPatient(id);
         model.addAttribute("listNotes", listNotes);
+        // Charge le résultat Risque Diabete
+        String diabetesResult = assessmentProxy.getRiskLevelByPatient(id);
+        logger.info("diabetesResult : {}", diabetesResult);
+        model.addAttribute("diabeteResult", diabetesResult);
 
         return "patientNotesAss";
     }
@@ -245,10 +232,6 @@ public class UIController {
     @DeleteMapping("/notes/delete/{id}")
     public String deleteNote(@PathVariable("id") Integer id, Model model, RedirectAttributes redirAttrs) {
         try {
-           /* if (!patientsProxy.getPatientById(id)) {
-                logger.error("Patient {} cannot be found'", id);
-                return "redirect:/patients";
-            }*/
             patientsProxy.deletePatient(id);
             notesProxy.deleteAllPatientNotes(id);
             model.addAttribute("patients", patientsProxy.getAllPatients());

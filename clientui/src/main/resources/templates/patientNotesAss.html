@@ -17,7 +17,7 @@
 
 <div class="container">
     <div class="row">
-        <!------------------ APPLET PATIENT -------------------->
+        <!------------------ APPLET PATIENT ------------------------------------>
         <div class="form-group col-md-6 ">
             <h2 class="mt-4">Patient Form</h2>
             <hr/>
@@ -74,22 +74,27 @@
             </div>
         </div>
 
-        <!------- APPLET ASSESSMENT ------------------------------->
+        <!------- APPLET ASSESSMENT --------------------------------------------->
         <div class="form-group col-md-6 ">
-            <h2 class="mt-4">Diabetes Assessment</h2>
+            <h2 class="mt-4">Diabete Assessment</h2>
             <hr/>
             <div class="form-group row justify-content-center">
                 <a href="#" class="btn btn-info my-1" role="button" id="ask-diabeteassess">Assess</a>
             </div>
-            <div class="form-group row">
-                <textarea id="result-diabeteassess" class="form-control" readonly></textarea>
+            <div class="form-group row ">
+                <label class="col-md-4 col-form-label">Assessment</label>
+                <div class="col-md-8">
+                    <label>
+                        <input th:field="${diabeteResult}" type="text"
+                               class="form-control" readonly>
+                    </label>
+                </div>
             </div>
-
         </div>
     </div>
 
 
-    <!------------------- APPLET NOTES ---------------------->
+    <!------------------- APPLET NOTES ----------------------------------------->
     <div class="row py-2" id="notes">
         <div class="col-6 col-sm-9">
             <h2>Notes</h2>

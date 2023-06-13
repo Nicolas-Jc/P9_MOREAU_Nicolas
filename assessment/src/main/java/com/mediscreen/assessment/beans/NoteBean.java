@@ -8,11 +8,11 @@ public class NoteBean {
 
     private Integer patientId;
 
-    private LocalDate noteDate;
+    private String noteDate;
 
     private String doctorNote;
 
-    public NoteBean(String s, int i, LocalDate minusYears, String noteSansMotDeclencheur) {
+    public NoteBean(String s, int i, String minusYears, String noteSansMotDeclencheur) {
     }
 
     public String getId() {
@@ -31,11 +31,11 @@ public class NoteBean {
         this.patientId = patientId;
     }
 
-    public LocalDate getNoteDate() {
+    public String getNoteDate() {
         return noteDate;
     }
 
-    public void setNoteDate(LocalDate noteDate) {
+    public void setNoteDate(String noteDate) {
         this.noteDate = noteDate;
     }
 

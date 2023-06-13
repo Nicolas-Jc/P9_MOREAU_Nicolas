@@ -49,6 +49,9 @@ public class PatientBean {
         this.phoneNumber = phoneNumber;
     }
 
+    public PatientBean(String lastName1, String firstName1, LocalDate of, String m, String s, String s1) {
+    }
+
     public Integer getId() {
         return id;
     }
