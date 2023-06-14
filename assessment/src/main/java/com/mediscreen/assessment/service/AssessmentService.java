@@ -18,15 +18,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-//@PropertySource("classpath:triggers.properties")
 public class AssessmentService {
 
     private static final Logger logger = LogManager.getLogger(AssessmentService.class);
 
-    // Récupération Liste termes déclencheurs
-   /* @Value("#{${triggers}}")
-    List<String> triggersList;
-*/
     // Récupération Liste termes déclencheurs
     @Value("${triggering.words}")
     String triggeringWords;

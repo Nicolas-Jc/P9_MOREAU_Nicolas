@@ -49,8 +49,17 @@ public class PatientBean {
         this.phoneNumber = phoneNumber;
     }
 
-    public PatientBean(String lastName1, String firstName1, LocalDate of, String m, String s, String s1) {
+    public PatientBean(String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
+
+    /*public PatientBean(String lastName1, String firstName1, LocalDate of, String m, String s, String s1) {
+    }*/
 
     public Integer getId() {
         return id;
