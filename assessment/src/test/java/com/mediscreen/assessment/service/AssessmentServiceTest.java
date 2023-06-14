@@ -17,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,12 +35,14 @@ public class AssessmentServiceTest {
     private PatientsProxy patientProxy;
     @Mock
     private NotesProxy noteProxy;
-    //@InjectMocks
+    @InjectMocks
     AssessmentService assessmentService;
 
 
     @BeforeEach
     void setup() {
+        assessmentService.triggeringWords = "Microalbumine|Taille|Poids|Fumeur|Anormal|Cholestérol|Vertige|Rechute|Réaction|Anticorps|Hémoglobine A1C";
+        //assessmentService.triggeringWords = "Microalbumine|Taille";
         //assessmentService.triggersList = Collections.singletonList("Cholestérol,Poids,Microalbumine,Vertige");
        /* assessmentService.triggersList = Collections.singletonList("Microalbumine,Taille,Poids," +
                 "Fumeur,Anormal,Cholestérol,Vertige,Rechute,Réaction,Anticorps,Hémoglobine A1C");*/
@@ -50,10 +51,9 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_Sup30Y_1TriggerTest() {
-        // GIVEN
       /*  patient1 = new PatientBean(1, "LastName", "Firstname",
                 LocalDate.now().minusYears(40), "F", "TestAdress", "07.07.07.07.07");*/
-        patient1 = new PatientBean(1, "LastName", "Firstname",
+        patient1 = new PatientBean(1, "LastName", "FirstName",
                 LocalDate.now(Clock.systemUTC()).minusYears(40), "F", "TestAdress", "07.07.07.07.07");
 
 
@@ -64,29 +64,148 @@ public class AssessmentServiceTest {
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
-        // WHEN
+
         String result = assessmentService.diabeteAssessment(1);
-        // THEN
-        assertEquals("Patient: LastName Firstname (age 40) diabetes assessment is: None", result);
+        assertEquals("Patient: LastName FirstName (age 40) diabetes assessment is: None", result);
     }
 
     @Test
     void diabeteAssessment_Sup30Y_2TriggersTest() {
-        // GIVEN
-        patient1 = new PatientBean(1, "LastName", "Firstname",
-                LocalDate.now(Clock.systemUTC()).minusYears(40), "F", "TestAdress", "07.07.07.07.07");
-
-
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(31), "M", "address", "07.07.07.07.07");
         note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Taille");
         note2 = new NoteBean("2", 1, "2002-02-02", "Note sans mot déclencheur");
-
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
-        // WHEN
+
         String result = assessmentService.diabeteAssessment(1);
-        // THEN
-        assertEquals("Patient: LastName Firstname (age 40) diabetes assessment is: BorderLine", result);
+        assertEquals("Patient: LastName FirstName (age 31) diabetes assessment is: Borderline", result);
     }
+
+    @Test
+    void diabeteAssessment_Sup30Y_6TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(35), "M", "address", "07.07.07.07.07");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Taille Poids");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Anormal Cholestérol");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        String result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 35) diabetes assessment is: In Danger", result);
+    }
+
+    @Test
+    void diabeteAssessment_Sup30Y_8TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(38), "M", "address", "07.07.07.07.07");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Taille Poids");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Anormal Cholestérol Rechute Réaction");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        String result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 38) diabetes assessment is: Early onset", result);
+    }
+
+    @Test
+    void diabeteAssessment_FemaleInf30Y_2TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(29), "F", "address", "07.07.07.07.07");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        //ACT:
+        String result = assessmentService.diabeteAssessment(1);
+
+        //ASSERT:
+        assertEquals("Patient: LastName FirstName (age 29) diabetes assessment is: None", result);
+    }
+
+    @Test
+    void diabeteAssessment_FemaleInf30Y_4TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(25), "F", "address", "07.07.07.07.07");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Réaction");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Rechute ");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        String result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 25) diabetes assessment is: In Danger", result);
+    }
+
+    @Test
+    void diabeteAssessment_FemaleInf30_7TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(23), "F", "address", "07.07.07.07.07");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Réaction Vertige");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Rechute Anticorps Hémoglobine A1C");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        String result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 23) diabetes assessment is: Early onset", result);
+    }
+
+    @Test
+    void diabeteAssessment_MaleInf30Y_2TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(28), "M", "address1", "111-222-333");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Hémoglobine A1C");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        String result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 28) diabetes assessment is: None", result);
+    }
+
+    @Test
+    void diabeteAssessment_MaleInf30Y_3TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(20), "M", "address1", "07.07.07.07.07");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Anticorps Hémoglobine A1C");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        String result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 20) diabetes assessment is: In Danger", result);
+    }
+
+    @Test
+    void diabeteAssessment_MaleInf30Y_5TriggersTest() {
+        patient1 = new PatientBean(1, "LastName", "FirstName",
+                LocalDate.now().minusYears(25), "M", "address1", "07.07.07.07.07");
+        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Poids Fumeur");
+        note2 = new NoteBean("2", 1, "2002-02-02", "Note Anticorps Hémoglobine A1C");
+        listNotes.add(note1);
+        listNotes.add(note2);
+        when(patientProxy.getPatientById(1)).thenReturn(patient1);
+        when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
+
+        String result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 25) diabetes assessment is: Early onset", result);
+    }
+
+
 }

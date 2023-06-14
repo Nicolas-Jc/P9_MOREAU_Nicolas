@@ -5,23 +5,31 @@ import com.mediscreen.assessment.beans.PatientBean;
 import com.mediscreen.assessment.constant.RiskLevel;
 import com.mediscreen.assessment.proxies.NotesProxy;
 import com.mediscreen.assessment.proxies.PatientsProxy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
-@PropertySource("classpath:triggers.properties")
+//@PropertySource("classpath:triggers.properties")
 public class AssessmentService {
 
+    private static final Logger logger = LogManager.getLogger(AssessmentService.class);
+
     // Récupération Liste termes déclencheurs
-    @Value("#{${triggers}}")
+   /* @Value("#{${triggers}}")
     List<String> triggersList;
+*/
+    // Récupération Liste termes déclencheurs
+    @Value("${triggering.words}")
+    String triggeringWords;
 
     @Autowired
     private NotesProxy microserviceNotesProxy;
@@ -82,7 +90,7 @@ public class AssessmentService {
     // Comptage Nb Termes déclencheur dans les notes d'un patient
     private Integer getTriggersCount(List<NoteBean> listNotes) {
 
-        int count = 0;
+       /* int count = 0;
         List<String> countedTriggers = new ArrayList<>();
 
         for (NoteBean note : listNotes) {
@@ -94,6 +102,28 @@ public class AssessmentService {
                 }
             }
         }
-        return count;
+        return count;*/
+
+        logger.debug("triggeringWords = {}", triggeringWords);
+
+        int finalCounter = 0;
+
+        Pattern p = Pattern.compile(
+                triggeringWords,
+                Pattern.CASE_INSENSITIVE);
+
+        for (NoteBean note : listNotes) {
+            logger.debug("DoctorNote = {}", note.getDoctorNote());
+            Matcher m = p.matcher(note.getDoctorNote());
+
+            int count = 0;
+            while (m.find()) {
+                count++;
+            }
+            finalCounter += count;
+            logger.debug("Nb mots déclencheurs dans la Note ={}", count);
+        }
+        logger.debug("Total mots déclencheurs ={}", finalCounter);
+        return finalCounter;
     }
 }
