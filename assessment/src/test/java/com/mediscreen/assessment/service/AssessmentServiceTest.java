@@ -1,7 +1,7 @@
 package com.mediscreen.assessment.service;
 
-import com.mediscreen.assessment.beans.NoteBean;
-import com.mediscreen.assessment.beans.PatientBean;
+import com.mediscreen.assessment.model.NoteModel;
+import com.mediscreen.assessment.model.PatientModel;
 
 
 import com.mediscreen.assessment.proxies.NotesProxy;
@@ -26,10 +26,10 @@ import static org.mockito.Mockito.when;
 @AutoConfigureMockMvc
 public class AssessmentServiceTest {
 
-    PatientBean patient1;
-    NoteBean note1;
-    NoteBean note2;
-    List<NoteBean> listNotes;
+    PatientModel patient1;
+    NoteModel note1;
+    NoteModel note2;
+    List<NoteModel> listNotes;
 
     @Mock
     private PatientsProxy patientProxy;
@@ -53,12 +53,12 @@ public class AssessmentServiceTest {
     void diabeteAssessment_Sup30Y_1TriggerTest() {
       /*  patient1 = new PatientBean(1, "LastName", "Firstname",
                 LocalDate.now().minusYears(40), "F", "TestAdress", "07.07.07.07.07");*/
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now(Clock.systemUTC()).minusYears(40), "F", "TestAdress", "07.07.07.07.07");
 
 
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note sans mot déclencheur");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note sans mot déclencheur");
 
         listNotes.add(note1);
         listNotes.add(note2);
@@ -71,10 +71,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_Sup30Y_2TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(31), "M", "address", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Taille");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note sans mot déclencheur");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine Taille");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note sans mot déclencheur");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -86,10 +86,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_Sup30Y_6TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(35), "M", "address", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Taille Poids");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Anormal Cholestérol");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine Taille Poids");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Fumeur Anormal Cholestérol");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -101,10 +101,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_Sup30Y_8TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(38), "M", "address", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Taille Poids");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Anormal Cholestérol Rechute Réaction");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine Taille Poids");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Fumeur Anormal Cholestérol Rechute Réaction");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -116,10 +116,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_FemaleInf30Y_2TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(29), "F", "address", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Fumeur");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -134,10 +134,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_FemaleInf30Y_4TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(25), "F", "address", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Réaction");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Rechute ");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine Réaction");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Fumeur Rechute ");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -149,10 +149,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_FemaleInf30_7TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(23), "F", "address", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Réaction Vertige");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Fumeur Rechute Anticorps Hémoglobine A1C");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine Réaction Vertige");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Fumeur Rechute Anticorps Hémoglobine A1C");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -164,10 +164,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_MaleInf30Y_2TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(28), "M", "address1", "111-222-333");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Hémoglobine A1C");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Hémoglobine A1C");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -179,10 +179,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_MaleInf30Y_3TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(20), "M", "address1", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Anticorps Hémoglobine A1C");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Anticorps Hémoglobine A1C");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
@@ -194,10 +194,10 @@ public class AssessmentServiceTest {
 
     @Test
     void diabeteAssessment_MaleInf30Y_5TriggersTest() {
-        patient1 = new PatientBean(1, "LastName", "FirstName",
+        patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now().minusYears(25), "M", "address1", "07.07.07.07.07");
-        note1 = new NoteBean("1", 1, "2000-01-01", "Note avec Microalbumine Poids Fumeur");
-        note2 = new NoteBean("2", 1, "2002-02-02", "Note Anticorps Hémoglobine A1C");
+        note1 = new NoteModel("1", 1, "2000-01-01", "Note avec Microalbumine Poids Fumeur");
+        note2 = new NoteModel("2", 1, "2002-02-02", "Note Anticorps Hémoglobine A1C");
         listNotes.add(note1);
         listNotes.add(note2);
         when(patientProxy.getPatientById(1)).thenReturn(patient1);

@@ -1,8 +1,6 @@
-package com.mediscreen.assessment.beans;
+package com.mediscreen.assessment.model;
 
-import java.time.LocalDate;
-
-public class NoteBean {
+public class NoteModel {
 
     private String id;
 
@@ -12,7 +10,7 @@ public class NoteBean {
 
     private String doctorNote;
 
-    public NoteBean(String id, Integer patientId, String noteDate, String doctorNote) {
+    public NoteModel(String id, Integer patientId, String noteDate, String doctorNote) {
         this.id = id;
         this.patientId = patientId;
         this.noteDate = noteDate;

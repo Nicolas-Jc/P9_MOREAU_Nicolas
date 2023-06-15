@@ -1,7 +1,7 @@
 package com.mediscreen.clientui.controller;
 
-import com.mediscreen.clientui.beans.NoteBean;
-import com.mediscreen.clientui.beans.PatientBean;
+import com.mediscreen.clientui.model.NoteModel;
+import com.mediscreen.clientui.model.PatientModel;
 import com.mediscreen.clientui.proxies.AssessmentProxy;
 import com.mediscreen.clientui.proxies.NotesProxy;
 import com.mediscreen.clientui.proxies.PatientsProxy;
@@ -44,31 +44,31 @@ public class PatientController {
     // view Patients List
     @GetMapping("/patients")
     public String showPatientsList(Model model) {
-        List<PatientBean> patients = patientsProxy.getAllPatients();
+        List<PatientModel> patients = patientsProxy.getAllPatients();
         model.addAttribute("patients", patients);
 
         return "patients";
     }
 
 
-    @GetMapping("/patientAdd")
+    @GetMapping("/patientInput")
     public String showPatientForm(@RequestParam(required = false) Integer id, Model model) {
 
         if (id == null) {
-            model.addAttribute("patient", new PatientBean());
+            model.addAttribute("patient", new PatientModel());
         } else {
             model.addAttribute("patient", patientsProxy.getPatientById(id));
         }
-        return "patientAdd";
+        return "patientInput";
     }
 
     // Button Add / Update Patient To List
     @PostMapping("/patient/validate")
-    public String validate(@Valid @ModelAttribute("patient") PatientBean patientBean,
+    public String validate(@Valid @ModelAttribute("patient") PatientModel patientBean,
                            BindingResult result, RedirectAttributes redirAttrs) {
 
         if (result.hasErrors()) {
-            return "patientAdd";
+            return "patientInput";
         }
 
         // Cas creation Patient dejà en BDD
@@ -76,7 +76,7 @@ public class PatientController {
             result.rejectValue("lastName", "", "This patient already exists in the database");
             result.rejectValue("firstName", "", "This patient already exists in the database");
             result.rejectValue("birthDate", "", "This patient already exists in the database");
-            return "patientAdd";
+            return "patientInput";
         }
 
         if (patientBean.getId() == null) {
@@ -110,17 +110,17 @@ public class PatientController {
     @GetMapping("/patients/{id}")
     public String patientNotes(@PathVariable Integer id, Model model) {
         // Charge les infos du patient
-        PatientBean patient = patientsProxy.getPatientById(id);
+        PatientModel patient = patientsProxy.getPatientById(id);
         model.addAttribute("patient", patient);
         // Charge la Liste des Notes du Patient
-        List<NoteBean> listNotes = notesProxy.getNotesByPatient(id);
+        List<NoteModel> listNotes = notesProxy.getNotesByPatient(id);
         model.addAttribute("listNotes", listNotes);
         // Charge le résultat Risque Diabete
         String diabetesResult = assessmentProxy.getRiskLevelByPatient(id);
         logger.info("diabetesResult : {}", diabetesResult);
         model.addAttribute("diabeteAssessment", diabetesResult);
 
-        return "patientNotesAss";
+        return "patientAssess";
     }
 
 

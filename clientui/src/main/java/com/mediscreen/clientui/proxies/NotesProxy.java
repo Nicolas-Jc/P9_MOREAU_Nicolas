@@ -1,6 +1,6 @@
 package com.mediscreen.clientui.proxies;
 
-import com.mediscreen.clientui.beans.NoteBean;
+import com.mediscreen.clientui.model.NoteModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,22 +10,22 @@ import java.util.List;
 public interface NotesProxy {
 
     @GetMapping("/notes")
-    List<NoteBean> getAllNotes();
+    List<NoteModel> getAllNotes();
 
     @GetMapping("/notes/{id}")
-    NoteBean getNote(@PathVariable String id);
+    NoteModel getNote(@PathVariable String id);
 
     @PostMapping("/notes/add")
-    NoteBean addNote(@RequestBody final NoteBean noteToAdd);
+    NoteModel addNote(@RequestBody final NoteModel noteToAdd);
 
     @PutMapping("/notes")
-    NoteBean updateNote(@RequestBody NoteBean noteToUpdate);
+    NoteModel updateNote(@RequestBody NoteModel noteToUpdate);
 
     @DeleteMapping("/notes/delete/{id}")
     void deleteNote(@PathVariable("id") final String noteId);
 
     @GetMapping("/patients/{patientId}/notes")
-    List<NoteBean> getNotesByPatient(@PathVariable Integer patientId);
+    List<NoteModel> getNotesByPatient(@PathVariable Integer patientId);
 
     @DeleteMapping(value = "/patients/{patientId}/notes/delete")
     void deleteAllPatientNotes(@PathVariable Integer patientId);

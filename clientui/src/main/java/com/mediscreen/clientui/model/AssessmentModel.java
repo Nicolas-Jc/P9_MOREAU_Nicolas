@@ -1,8 +1,8 @@
-package com.mediscreen.clientui.beans;
+package com.mediscreen.clientui.model;
 
 import java.time.LocalDate;
 
-public class AssessmentBean {
+public class AssessmentModel {
     private String lastName;
 
     private String firstName;
@@ -11,7 +11,7 @@ public class AssessmentBean {
 
     private String assessment;
 
-    
+
     public String getLastName() {
         return lastName;
     }

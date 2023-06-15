@@ -1,8 +1,8 @@
 package com.mediscreen.clientui.controller;
 
 
-import com.mediscreen.clientui.beans.NoteBean;
-import com.mediscreen.clientui.beans.PatientBean;
+import com.mediscreen.clientui.model.NoteModel;
+import com.mediscreen.clientui.model.PatientModel;
 import com.mediscreen.clientui.proxies.AssessmentProxy;
 import com.mediscreen.clientui.proxies.NotesProxy;
 import com.mediscreen.clientui.proxies.PatientsProxy;
@@ -41,25 +41,25 @@ class PatientControllerTest {
     @MockBean
     private AssessmentProxy assessmentProxy;
 
-    PatientBean patientBean1;
-    PatientBean patientBean2;
-    List<PatientBean> listPatientsBean;
-    NoteBean noteBean1;
-    NoteBean noteBean2;
-    List<NoteBean> listNoteBean;
+    PatientModel patientBean1;
+    PatientModel patientBean2;
+    List<PatientModel> listPatientsBean;
+    NoteModel noteBean1;
+    NoteModel noteBean2;
+    List<NoteModel> listNoteBean;
 
     @BeforeEach
     void setup() {
-        patientBean1 = new PatientBean(1, "lastName1", "firstName1",
+        patientBean1 = new PatientModel(1, "lastName1", "firstName1",
                 LocalDate.of(2000, 1, 10), "M", "1st street New York", "111-222-333");
-        patientBean2 = new PatientBean(2, "lastName2", "firstName2",
+        patientBean2 = new PatientModel(2, "lastName2", "firstName2",
                 LocalDate.of(2010, 12, 30), "F", "2nd street Miami", "444-555-999");
         listPatientsBean = new ArrayList<>();
         listPatientsBean.add(patientBean1);
         listPatientsBean.add(patientBean2);
 
-        noteBean1 = new NoteBean("mdb1", 1, "2023-01-01", "note1");
-        noteBean2 = new NoteBean("mdb2", 1, "2023-01-01", "note2");
+        noteBean1 = new NoteModel("mdb1", 1, "2023-01-01", "note1");
+        noteBean2 = new NoteModel("mdb2", 1, "2023-01-01", "note2");
         listNoteBean = new ArrayList<>();
         listNoteBean.add(noteBean1);
         listNoteBean.add(noteBean2);
@@ -101,9 +101,9 @@ class PatientControllerTest {
 
         when(patientsProxy.getPatientById(1)).thenReturn(patientBean1);
 
-        mockMvc.perform(get("/patientAdd?id=1"))
+        mockMvc.perform(get("/patientInput?id=1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("patientAdd"))
+                .andExpect(view().name("patientInput"))
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("patient"))
                 .andExpect(model().attribute("patient", patientBean1))
@@ -116,12 +116,12 @@ class PatientControllerTest {
     void showPatientForm_NewPatient() throws Exception {
 
 
-        mockMvc.perform(get("/patientAdd"))
+        mockMvc.perform(get("/patientInput"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("patientAdd"))
+                .andExpect(view().name("patientInput"))
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("patient"))
-                .andExpect(model().attribute("patient", new PatientBean())) //must be equal to empty PatientBean
+                .andExpect(model().attribute("patient", new PatientModel())) //must be equal to empty PatientBean
         ;
         verify(patientsProxy, never()).getPatientById(any(Integer.class));
 
@@ -143,9 +143,9 @@ class PatientControllerTest {
                 .andExpect(redirectedUrl("/patients/1"))
         ;
 
-        ArgumentCaptor<PatientBean> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientBean.class);
+        ArgumentCaptor<PatientModel> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientModel.class);
         verify(patientsProxy, times(1)).updatePatient(patientBeanArgumentCaptor.capture());
-        PatientBean patientBeanCaptured = patientBeanArgumentCaptor.getValue();
+        PatientModel patientBeanCaptured = patientBeanArgumentCaptor.getValue();
         //assertEquals(patientBean1, patientBeanCaptured);
         assertEquals(1, patientBeanCaptured.getId());
 
@@ -156,7 +156,7 @@ class PatientControllerTest {
     @Test
     void validate_NewPatientTest() throws Exception {
         //NMO NMO NMO NMO
-        when(patientsProxy.checkExistPatient(any(PatientBean.class))).thenReturn(Boolean.FALSE);
+        when(patientsProxy.checkExistPatient(any(PatientModel.class))).thenReturn(Boolean.FALSE);
         patientBean1.setId(null);
 
         mockMvc.perform(post("/patient/validate")
@@ -171,9 +171,9 @@ class PatientControllerTest {
                 .andExpect(redirectedUrl("/patients"))
         ;
 
-        ArgumentCaptor<PatientBean> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientBean.class);
+        ArgumentCaptor<PatientModel> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientModel.class);
         verify(patientsProxy, times(1)).addPatient(patientBeanArgumentCaptor.capture());
-        PatientBean patientBeanCaptured = patientBeanArgumentCaptor.getValue();
+        PatientModel patientBeanCaptured = patientBeanArgumentCaptor.getValue();
         assertEquals(patientBean1, patientBeanCaptured);
 
     }
@@ -181,10 +181,10 @@ class PatientControllerTest {
     @Test
     void TestAddPatient() throws Exception {
 
-        mockMvc.perform(get("/patientAdd"))
+        mockMvc.perform(get("/patientInput"))
                 .andExpect(model().attributeExists("patient"))
                 .andExpect(model().size(1))
-                .andExpect(view().name("patientAdd"))
+                .andExpect(view().name("patientInput"))
                 .andExpect(status().isOk());
     }
 
@@ -200,7 +200,7 @@ class PatientControllerTest {
                         .param("phoneNumber", "")
                 )
                 .andExpect(status().isOk())
-                .andExpect(view().name("patientAdd"))
+                .andExpect(view().name("patientInput"))
                 .andExpect(model().attributeErrorCount("patient", 7))
         ;
     }
@@ -208,7 +208,7 @@ class PatientControllerTest {
     @Test
     void validateUserExistsTest() throws Exception {
 
-        when(patientsProxy.checkExistPatient(any(PatientBean.class))).thenReturn(Boolean.TRUE);
+        when(patientsProxy.checkExistPatient(any(PatientModel.class))).thenReturn(Boolean.TRUE);
 
         mockMvc.perform(post("/patient/validate")
                         .param("lastName", "lastName1")
@@ -219,11 +219,11 @@ class PatientControllerTest {
                         .param("phoneNumber", "111-222-333")
                 )
                 .andExpect(status().isOk())
-                .andExpect(view().name("patientAdd"))
+                .andExpect(view().name("patientInput"))
                 .andExpect(model().attributeErrorCount("patient", 2))
         ;
 
-        verify(patientsProxy, never()).addPatient(any(PatientBean.class));
+        verify(patientsProxy, never()).addPatient(any(PatientModel.class));
     }
 
     @Test
@@ -233,7 +233,7 @@ class PatientControllerTest {
 
         mockMvc.perform(get("/patients/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("patientNotesAss"))
+                .andExpect(view().name("patientAssess"))
                 .andExpect(model().size(3))
                 .andExpect(model().attributeExists("patient"))
                 .andExpect(model().attribute("patient", patientBean1))

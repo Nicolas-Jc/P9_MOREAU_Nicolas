@@ -1,6 +1,6 @@
 package com.mediscreen.assessment.proxies;
 
-import com.mediscreen.assessment.beans.PatientBean;
+import com.mediscreen.assessment.model.PatientModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.*;
 public interface PatientsProxy {
 
     @GetMapping("/patients/{id}")
-    PatientBean getPatientById(@PathVariable int id);
+    PatientModel getPatientById(@PathVariable int id);
 
 }

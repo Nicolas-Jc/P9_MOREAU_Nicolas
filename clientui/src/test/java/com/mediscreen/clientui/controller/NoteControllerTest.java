@@ -1,8 +1,8 @@
 package com.mediscreen.clientui.controller;
 
 
-import com.mediscreen.clientui.beans.NoteBean;
-import com.mediscreen.clientui.beans.PatientBean;
+import com.mediscreen.clientui.model.NoteModel;
+import com.mediscreen.clientui.model.PatientModel;
 import com.mediscreen.clientui.proxies.AssessmentProxy;
 import com.mediscreen.clientui.proxies.NotesProxy;
 import com.mediscreen.clientui.proxies.PatientsProxy;
@@ -39,25 +39,25 @@ class NoteControllerTest {
     @MockBean
     private AssessmentProxy assessmentProxy;
 
-    PatientBean patientBean1;
-    PatientBean patientBean2;
-    List<PatientBean> listPatientsBean;
-    NoteBean noteBean1;
-    NoteBean noteBean2;
-    List<NoteBean> listNoteBean;
+    PatientModel patientBean1;
+    PatientModel patientBean2;
+    List<PatientModel> listPatientsBean;
+    NoteModel noteBean1;
+    NoteModel noteBean2;
+    List<NoteModel> listNoteBean;
 
     @BeforeEach
     void setup() {
-        patientBean1 = new PatientBean(1, "lastName1", "fistName1",
+        patientBean1 = new PatientModel(1, "lastName1", "fistName1",
                 LocalDate.of(2000, 1, 10), "M", "1st street New York", "111-222-333");
-        patientBean2 = new PatientBean(2, "lastName2", "firstName2",
+        patientBean2 = new PatientModel(2, "lastName2", "firstName2",
                 LocalDate.of(2010, 12, 30), "F", "2nd street Miami", "444-555-999");
         listPatientsBean = new ArrayList<>();
         listPatientsBean.add(patientBean1);
         listPatientsBean.add(patientBean2);
 
-        noteBean1 = new NoteBean("mdb1", 1, "2023-06-15", "note1");
-        noteBean2 = new NoteBean("mdb2", 1, "2023-10-10", "note2");
+        noteBean1 = new NoteModel("mdb1", 1, "2023-06-15", "note1");
+        noteBean2 = new NoteModel("mdb2", 1, "2023-10-10", "note2");
         listNoteBean = new ArrayList<>();
         listNoteBean.add(noteBean1);
         listNoteBean.add(noteBean2);
@@ -66,12 +66,12 @@ class NoteControllerTest {
 
     @Test
     void showNoteFormUpdatePatient() throws Exception {
-        NoteBean expectedNoteBean = new NoteBean("mongoid", 1, "existing note text");
+        NoteModel expectedNoteBean = new NoteModel("mongoid", 1, "existing note text");
         when(notesProxy.getNote("mongoid")).thenReturn(expectedNoteBean);
 
-        mockMvc.perform(get("/noteAdd?patientId=1&id=mongoid"))
+        mockMvc.perform(get("/noteInput?patientId=1&id=mongoid"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("noteAdd"))
+                .andExpect(view().name("noteInput"))
                 .andExpect(model().size(1))
                 .andExpect(model().attributeExists("note"))
                 .andExpect(model().attribute("note", expectedNoteBean)) //must be equal to expectedNoteBean
@@ -82,7 +82,7 @@ class NoteControllerTest {
     @Test
     void validateUpdateNoteTest() throws Exception {
 
-        mockMvc.perform(post("/noteAdd")
+        mockMvc.perform(post("/noteInput")
                         .param("id", "mdb2")
                         .param("patientId", "1")
                         .param("noteDate", "2023-10-10")
@@ -92,9 +92,9 @@ class NoteControllerTest {
                 .andExpect(redirectedUrl("/patients/1"))
         ;
 
-        ArgumentCaptor<NoteBean> noteBeanArgumentCaptor = ArgumentCaptor.forClass(NoteBean.class);
+        ArgumentCaptor<NoteModel> noteBeanArgumentCaptor = ArgumentCaptor.forClass(NoteModel.class);
         verify(notesProxy, times(1)).updateNote(noteBeanArgumentCaptor.capture());
-        NoteBean noteBeanCaptured = noteBeanArgumentCaptor.getValue();
+        NoteModel noteBeanCaptured = noteBeanArgumentCaptor.getValue();
         //assertEquals(noteBean2, noteBeanCaptured);
         assertEquals("mdb2", noteBeanCaptured.getId());
 
@@ -104,7 +104,7 @@ class NoteControllerTest {
     void validateNewNoteTest() throws Exception {
         noteBean1.setId("null");
 
-        mockMvc.perform(post("/noteAdd")
+        mockMvc.perform(post("/noteInput")
                         .param("patientId", "1")
                         .param("noteDate", "2023-06-15")
                         .param("doctorNote", "note1")
@@ -113,9 +113,9 @@ class NoteControllerTest {
                 .andExpect(redirectedUrl("/patients/1"))
         ;
 
-        ArgumentCaptor<NoteBean> noteBeanArgumentCaptor = ArgumentCaptor.forClass(NoteBean.class);
+        ArgumentCaptor<NoteModel> noteBeanArgumentCaptor = ArgumentCaptor.forClass(NoteModel.class);
         verify(notesProxy, times(1)).addNote(noteBeanArgumentCaptor.capture());
-        NoteBean noteBeanCaptured = noteBeanArgumentCaptor.getValue();
+        NoteModel noteBeanCaptured = noteBeanArgumentCaptor.getValue();
         //assertEquals(noteBean1, noteBeanCaptured);
         assertEquals(null, noteBeanCaptured.getId());
     }
@@ -123,10 +123,10 @@ class NoteControllerTest {
     @Test
     void ShowNoteFormWithoutIdTest() throws Exception {
 
-        mockMvc.perform(post("/noteAdd")
+        mockMvc.perform(post("/noteInput")
                 )
                 .andExpect(status().isOk())
-                .andExpect(view().name("noteAdd"))
+                .andExpect(view().name("noteInput"))
                 .andExpect(model().attributeErrorCount("note", 2))
         ;
     }

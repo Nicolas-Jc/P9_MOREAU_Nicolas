@@ -1,9 +1,9 @@
-package com.mediscreen.assessment.beans;
+package com.mediscreen.assessment.model;
 
 
 import java.time.LocalDate;
 
-public class PatientBean {
+public class PatientModel {
 
     private Integer id;
 
@@ -19,8 +19,8 @@ public class PatientBean {
 
     private String phoneNumber;
 
-    public PatientBean(Integer id, String lastName, String firstName,
-                       LocalDate birthDate, String sex, String address, String phoneNumber) {
+    public PatientModel(Integer id, String lastName, String firstName,
+                        LocalDate birthDate, String sex, String address, String phoneNumber) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;

@@ -1,31 +1,30 @@
 package com.mediscreen.clientui.proxies;
 
-import com.mediscreen.clientui.beans.PatientBean;
+import com.mediscreen.clientui.model.PatientModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @FeignClient(name = "microservice-patients", url = "${microservice-patients.url}")
 public interface PatientsProxy {
 
     @GetMapping("/patients")
-    List<PatientBean> getAllPatients();
+    List<PatientModel> getAllPatients();
 
     @GetMapping("/patients/{id}")
-    PatientBean getPatientById(@PathVariable int id);
+    PatientModel getPatientById(@PathVariable int id);
 
     @PostMapping("/patients/add")
-    PatientBean addPatient(@RequestBody final PatientBean patientToAdd);
+    PatientModel addPatient(@RequestBody final PatientModel patientToAdd);
 
     @PutMapping("/patients")
-    PatientBean updatePatient(@RequestBody PatientBean patientToUpdate);
+    PatientModel updatePatient(@RequestBody PatientModel patientToUpdate);
 
     @DeleteMapping("/patients/delete/{id}")
     void deletePatient(@PathVariable("id") final Integer patientId);
 
     @PostMapping("/patients/exist")
-    Boolean checkExistPatient(@RequestBody PatientBean patient);
+    Boolean checkExistPatient(@RequestBody PatientModel patient);
 
 }

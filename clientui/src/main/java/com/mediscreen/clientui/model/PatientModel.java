@@ -1,4 +1,4 @@
-package com.mediscreen.clientui.beans;
+package com.mediscreen.clientui.model;
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-public class PatientBean {
+public class PatientModel {
 
     private Integer id;
 
@@ -36,10 +36,10 @@ public class PatientBean {
     private String phoneNumber;
 
 
-    public PatientBean() {
+    public PatientModel() {
     }
 
-    public PatientBean(Integer id, String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
+    public PatientModel(Integer id, String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -49,7 +49,7 @@ public class PatientBean {
         this.phoneNumber = phoneNumber;
     }
 
-    public PatientBean(String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
+    public PatientModel(String lastName, String firstName, LocalDate birthDate, String sex, String address, String phoneNumber) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.birthDate = birthDate;

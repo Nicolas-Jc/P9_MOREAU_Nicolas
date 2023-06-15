@@ -76,7 +76,7 @@
             <div class="form-group row">
                 <div class="col">
                     <a href="#" class="btn btn-info" role="button"
-                       th:href="@{/patientAdd(id=${patient.id})}">Update</a>
+                       th:href="@{/patientInput(id=${patient.id})}">Update</a>
                 </div>
             </div>
         </div>
@@ -122,7 +122,7 @@
            th:text="${successSaveMessage}"></p>
         <div class="col-6 col-sm-3 text-right">
             <a href="#" class="btn btn-success btn-lg" role="button"
-               th:href="@{/noteAdd(patientId=${patient.id})}">New Note</a>
+               th:href="@{/noteInput(patientId=${patient.id})}">New Note</a>
         </div>
     </div>
 
@@ -145,7 +145,7 @@
                       th:action="@{'/patients/{patientId}/notes/delete/{id}'(patientId=${patientNote.patientId},id=${patientNote.id})}"
                       class="form-inline justify-content-end">
                     <a href="#" class="btn btn-info" role="button"
-                       th:href="@{/noteAdd(id=${patientNote.id},patientId=${patientNote.patientId})}">Update</a>
+                       th:href="@{/noteInput(id=${patientNote.id},patientId=${patientNote.patientId})}">Update</a>
                     <button type="submit" class="btn btn-danger"
                             onclick="return confirm('Do you confirm the deletion ?')">Delete
                     </button>

@@ -1,7 +1,7 @@
 package com.mediscreen.assessment.service;
 
-import com.mediscreen.assessment.beans.NoteBean;
-import com.mediscreen.assessment.beans.PatientBean;
+import com.mediscreen.assessment.model.NoteModel;
+import com.mediscreen.assessment.model.PatientModel;
 import com.mediscreen.assessment.constant.RiskLevel;
 import com.mediscreen.assessment.proxies.NotesProxy;
 import com.mediscreen.assessment.proxies.PatientsProxy;
@@ -36,9 +36,9 @@ public class AssessmentService {
 
         String diabeteAssessment = RiskLevel.LEVEL_0.getMessage();
 
-        PatientBean patient = microservicePatientsProxy.getPatientById(patientId);
+        PatientModel patient = microservicePatientsProxy.getPatientById(patientId);
         // récupération ensemble des notes d'un patient
-        List<NoteBean> listNotes = microserviceNotesProxy.getNotesByPatient(patientId);
+        List<NoteModel> listNotes = microserviceNotesProxy.getNotesByPatient(patientId);
         String sex = patient.getSex();
         int age = Period.between(patient.getBirthDate(), LocalDate.now()).getYears();
 
@@ -83,7 +83,7 @@ public class AssessmentService {
     }
 
     // Comptage Nb Termes déclencheur dans les notes d'un patient
-    private Integer getTriggersCount(List<NoteBean> listNotes) {
+    private Integer getTriggersCount(List<NoteModel> listNotes) {
 
        /* int count = 0;
         List<String> countedTriggers = new ArrayList<>();
@@ -107,7 +107,7 @@ public class AssessmentService {
                 triggeringWords,
                 Pattern.CASE_INSENSITIVE);
 
-        for (NoteBean note : listNotes) {
+        for (NoteModel note : listNotes) {
             logger.debug("DoctorNote = {}", note.getDoctorNote());
             Matcher m = p.matcher(note.getDoctorNote());
 

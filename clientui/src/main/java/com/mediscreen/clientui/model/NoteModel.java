@@ -1,9 +1,9 @@
-package com.mediscreen.clientui.beans;
+package com.mediscreen.clientui.model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class NoteBean {
+public class NoteModel {
 
     private String id;
 
@@ -16,7 +16,7 @@ public class NoteBean {
     @NotBlank
     private String doctorNote;
 
-    public NoteBean(String mongoid2, int i, String note2) {
+    public NoteModel(String mongoid2, int i, String note2) {
     }
 
     public String getId() {
@@ -51,10 +51,10 @@ public class NoteBean {
         this.doctorNote = doctorNote;
     }
 
-    public NoteBean() {
+    public NoteModel() {
     }
 
-    public NoteBean(String id, Integer patientId, String noteDate, String doctorNote) {
+    public NoteModel(String id, Integer patientId, String noteDate, String doctorNote) {
         this.id = id;
         this.patientId = patientId;
         this.noteDate = noteDate;
