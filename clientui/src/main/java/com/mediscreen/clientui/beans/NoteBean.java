@@ -2,7 +2,6 @@ package com.mediscreen.clientui.beans;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
 public class NoteBean {
 
@@ -16,6 +15,9 @@ public class NoteBean {
 
     @NotBlank
     private String doctorNote;
+
+    public NoteBean(String mongoid2, int i, String note2) {
+    }
 
     public String getId() {
         return id;

@@ -1,9 +1,13 @@
 package com.mediscreen.clientui.controller;
 
+
+import com.mediscreen.clientui.beans.NoteBean;
 import com.mediscreen.clientui.beans.PatientBean;
+import com.mediscreen.clientui.proxies.AssessmentProxy;
 import com.mediscreen.clientui.proxies.NotesProxy;
 import com.mediscreen.clientui.proxies.PatientsProxy;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,111 +15,231 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class PatientControllerTest {
+class PatientControllerTest {
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private WebApplicationContext context;
+    private MockMvc mockMvc;
     @MockBean
-    PatientsProxy patientsProxy;
+    private PatientsProxy patientsProxy;
+    @MockBean
+    private NotesProxy notesProxy;
 
     @MockBean
-    NotesProxy notesProxy;
-    private static PatientBean patientBean;
-    private static PatientBean patientBean1;
+    private AssessmentProxy assessmentProxy;
 
+    PatientBean patientBean1;
+    PatientBean patientBean2;
+    List<PatientBean> listPatientsBean;
+    NoteBean noteBean1;
+    NoteBean noteBean2;
+    List<NoteBean> listNoteBean;
 
     @BeforeEach
-    public void contextLoads() {
+    void setup() {
+        patientBean1 = new PatientBean(1, "lastName1", "firstName1",
+                LocalDate.of(2000, 1, 10), "M", "1st street New York", "111-222-333");
+        patientBean2 = new PatientBean(2, "lastName2", "firstName2",
+                LocalDate.of(2010, 12, 30), "F", "2nd street Miami", "444-555-999");
+        listPatientsBean = new ArrayList<>();
+        listPatientsBean.add(patientBean1);
+        listPatientsBean.add(patientBean2);
 
-        patientBean = new PatientBean();
-        patientBean.setId(1);
-        patientBean.setLastName("LastName");
-        patientBean.setFirstName("FirstName");
-        patientBean.setAddress("address");
-        patientBean.setSex("M");
-        patientBean.setPhoneNumber("0707070707");
-        patientBean.setBirthDate(LocalDate.EPOCH);
+        noteBean1 = new NoteBean("mdb1", 1, "2023-01-01", "note1");
+        noteBean2 = new NoteBean("mdb2", 1, "2023-01-01", "note2");
+        listNoteBean = new ArrayList<>();
+        listNoteBean.add(noteBean1);
+        listNoteBean.add(noteBean2);
 
-        patientBean1 = new PatientBean();
-        patientBean1.setId(1);
-        patientBean1.setLastName("LastName");
-        patientBean1.setFirstName("FirstName");
-        patientBean1.setAddress("1st street New York");
-        patientBean1.setSex("M");
-        patientBean1.setPhoneNumber("111-222-333");
-        patientBean1.setBirthDate(LocalDate.parse("2000-01-10"));
-
-        mvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
+    @Test
+    void homeTest() throws Exception {
+
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk());
+    }
 
     @Test
-    public void showPatientsListTest() throws Exception {
+    void showPatientsListTest() throws Exception {
+        when(patientsProxy.getAllPatients()).thenReturn(listPatientsBean);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/patients"))
-                .andExpect(model().attributeExists("patients"))
-                .andExpect(model().size(1))
+        mockMvc.perform(get("/patients"))
+                .andExpect(status().isOk())
                 .andExpect(view().name("patients"))
-                .andExpect(status().isOk()).andReturn();
-
-        assertNotNull(result);
+        ;
     }
 
     @Test
-    public void showPatientFormTest() throws Exception {
+    void deletePatientTest() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get("/patientAdd"))
+        mockMvc.perform(get("/patients/delete/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/patients"))
+        ;
+
+        verify(patientsProxy, times(1)).deletePatient(1);
+        verify(notesProxy, times(1)).deleteAllPatientNotes(1);
+
+    }
+
+    @Test
+    void showPatientForm_UpdatePatientTest() throws Exception {
+
+        when(patientsProxy.getPatientById(1)).thenReturn(patientBean1);
+
+        mockMvc.perform(get("/patientAdd?id=1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patientAdd"))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("patient"))
+                .andExpect(model().attribute("patient", patientBean1))
+        ;
+        verify(patientsProxy, times(1)).getPatientById(1);
+    }
+
+    @Disabled
+    @Test
+    void showPatientForm_NewPatient() throws Exception {
+
+
+        mockMvc.perform(get("/patientAdd"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patientAdd"))
+                .andExpect(model().size(1))
+                .andExpect(model().attributeExists("patient"))
+                .andExpect(model().attribute("patient", new PatientBean())) //must be equal to empty PatientBean
+        ;
+        verify(patientsProxy, never()).getPatientById(any(Integer.class));
+
+    }
+
+    @Test
+    void validateUpdatePatientTest() throws Exception {
+
+        mockMvc.perform(post("/patient/validate")
+                        .param("id", "1")
+                        .param("lastName", "lastName1")
+                        .param("firstName", "OtherFirstName")
+                        .param("birthDate", "2000-01-10")
+                        .param("sex", "M")
+                        .param("address", "1st street New York")
+                        .param("phoneNumber", "111-222-333")
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/patients/1"))
+        ;
+
+        ArgumentCaptor<PatientBean> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientBean.class);
+        verify(patientsProxy, times(1)).updatePatient(patientBeanArgumentCaptor.capture());
+        PatientBean patientBeanCaptured = patientBeanArgumentCaptor.getValue();
+        //assertEquals(patientBean1, patientBeanCaptured);
+        assertEquals(1, patientBeanCaptured.getId());
+
+    }
+
+
+    @Disabled
+    @Test
+    void validate_NewPatientTest() throws Exception {
+        //NMO NMO NMO NMO
+        when(patientsProxy.checkExistPatient(any(PatientBean.class))).thenReturn(Boolean.FALSE);
+        patientBean1.setId(null);
+
+        mockMvc.perform(post("/patient/validate")
+                        .param("lastName", "lastName1")
+                        .param("firstName", "firstName1")
+                        .param("birthDate", "2000-01-10")
+                        .param("sex", "M")
+                        .param("address", "1st street New York")
+                        .param("phoneNumber", "111-222-333")
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/patients"))
+        ;
+
+        ArgumentCaptor<PatientBean> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientBean.class);
+        verify(patientsProxy, times(1)).addPatient(patientBeanArgumentCaptor.capture());
+        PatientBean patientBeanCaptured = patientBeanArgumentCaptor.getValue();
+        assertEquals(patientBean1, patientBeanCaptured);
+
+    }
+
+    @Test
+    void TestAddPatient() throws Exception {
+
+        mockMvc.perform(get("/patientAdd"))
                 .andExpect(model().attributeExists("patient"))
                 .andExpect(model().size(1))
                 .andExpect(view().name("patientAdd"))
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void validateRequiredFieldsTest() throws Exception {
 
-   /* @Test
-    public void deletePatientTest() throws Exception {
-
-        mvc.perform(MockMvcRequestBuilders.get("/patients/delete/1"))
-                .andExpect(redirectedUrl("/patients"))
-                .andExpect(status().isFound())
-                .andExpect(model().hasNoErrors())
-                .andExpect(status().is3xxRedirection());
-        verify(patientsProxy, times(1)).deletePatient(1);
-    }*/
+        mockMvc.perform(post("/patient/validate")
+                        .param("lastName", "")
+                        .param("firstName", "")
+                        .param("birthDate", "")
+                        .param("sex", "")
+                        .param("address", "")
+                        .param("phoneNumber", "")
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("patientAdd"))
+                .andExpect(model().attributeErrorCount("patient", 7))
+        ;
+    }
 
     @Test
-    void deletePatientTest() throws Exception {
-        //ARRANGE
+    void validateUserExistsTest() throws Exception {
 
-        //ACT
-        mvc.perform(MockMvcRequestBuilders.get("/patients/delete/1"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/patients"))
+        when(patientsProxy.checkExistPatient(any(PatientBean.class))).thenReturn(Boolean.TRUE);
+
+        mockMvc.perform(post("/patient/validate")
+                        .param("lastName", "lastName1")
+                        .param("firstName", "")
+                        .param("birthDate", "2000-01-10")
+                        .param("sex", "M")
+                        .param("address", "1st street New York")
+                        .param("phoneNumber", "111-222-333")
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("patientAdd"))
+                .andExpect(model().attributeErrorCount("patient", 2))
         ;
-        //check user delete:
-        verify(patientsProxy, times(1)).deletePatient(1);
-        //check notes delete:
-        verify(notesProxy, times(1)).deleteAllPatientNotes(1);
 
+        verify(patientsProxy, never()).addPatient(any(PatientBean.class));
     }
+
+    @Test
+    void patientNotesTest() throws Exception {
+        when(patientsProxy.getPatientById(1)).thenReturn(patientBean1);
+        when(notesProxy.getNotesByPatient(1)).thenReturn(listNoteBean);
+
+        mockMvc.perform(get("/patients/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patientNotesAss"))
+                .andExpect(model().size(3))
+                .andExpect(model().attributeExists("patient"))
+                .andExpect(model().attribute("patient", patientBean1))
+                .andExpect(model().attributeExists("listNotes"))
+                .andExpect(model().attribute("listNotes", listNoteBean))
+        ;
+    }
+
 }

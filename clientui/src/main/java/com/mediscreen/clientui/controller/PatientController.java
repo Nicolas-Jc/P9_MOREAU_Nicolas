@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.context.WebContext;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -33,9 +32,6 @@ public class PatientController {
 
     @Autowired
     private AssessmentProxy assessmentProxy;
-
-    /*@Autowired
-    private AssessmentProxy assessmentProxy;*/
 
     private static final Logger logger = LogManager.getLogger(PatientController.class);
 
@@ -54,13 +50,6 @@ public class PatientController {
         return "patients";
     }
 
-    // view Patient/add
-   /* @GetMapping("/patient/add")
-    public String addPatientForm(Model model) {
-        model.addAttribute("patient", new PatientBean());
-        logger.info("View Patient Add loaded");
-        return "patientAdd";
-    }*/
 
     @GetMapping("/patientAdd")
     public String showPatientForm(@RequestParam(required = false) Integer id, Model model) {
@@ -84,8 +73,6 @@ public class PatientController {
 
         // Cas creation Patient dejà en BDD
         if (patientBean.getId() == null && patientsProxy.checkExistPatient(patientBean).equals(Boolean.TRUE)) {
-            /*redirAttrs.addFlashAttribute("errorCreateMessage",
-                    "This patient already exists in the database");*/
             result.rejectValue("lastName", "", "This patient already exists in the database");
             result.rejectValue("firstName", "", "This patient already exists in the database");
             result.rejectValue("birthDate", "", "This patient already exists in the database");
@@ -135,31 +122,6 @@ public class PatientController {
 
         return "patientNotesAss";
     }
-
-   /* @GetMapping("/noteAdd")
-    public String showNoteForm(@RequestParam(required = false) String noteId, @RequestParam Integer patientId, Model model) {
-
-        //id is unset: create note
-        if (noteId == null) {
-            NoteBean newNoteBean = new NoteBean();
-            newNoteBean.setPatientId(patientId);
-            model.addAttribute("note", newNoteBean);
-        }
-        //id is set: update note
-        else {
-            model.addAttribute("note", notesProxy.getNote(noteId));
-        }
-        return "noteAdd";
-    }*/
-
-    // view Note/add
-  /*  @GetMapping("/noteAdd")
-    public String addNoteForm(Model model) {
-        model.addAttribute("note", new NoteBean());
-        logger.info("View Note Add loaded");
-        return "noteAdd";
-
-    }*/
 
 
 }
