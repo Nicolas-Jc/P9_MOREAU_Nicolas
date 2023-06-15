@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.context.WebContext;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -98,7 +99,7 @@ public class PatientController {
             return "redirect:/patients";
         } else {
             patientsProxy.updatePatient(patientBean);
-            redirAttrs.addFlashAttribute("successSaveMessage",
+            redirAttrs.addFlashAttribute("successPatientUpdateMessage",
                     "Patient successfully updated");
             return "redirect:/patients/" + patientBean.getId();
         }
@@ -130,7 +131,7 @@ public class PatientController {
         // Charge le résultat Risque Diabete
         String diabetesResult = assessmentProxy.getRiskLevelByPatient(id);
         logger.info("diabetesResult : {}", diabetesResult);
-        //model.addAttribute("diabeteResult", diabetesResult);
+        model.addAttribute("diabeteAssessment", diabetesResult);
 
         return "patientNotesAss";
     }

@@ -11,12 +11,12 @@
     <artifactId>patient</artifactId>
     <name>patient</name>
     <description>patient microservice</description>
-    <properties>
-        <java.version>11</java.version>
-        <!--  <java.version>11</java.version>
-          <maven.compiler.target>11</maven.compiler.target>-->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <!-- <properties>
+         <java.version>11</java.version>
+         &lt;!&ndash;  <java.version>11</java.version>
+           <maven.compiler.target>11</maven.compiler.target>&ndash;&gt;
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     </properties>-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,30 +49,30 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
-                <configuration>
-                    <excludes>
-                    </excludes>
+            <!-- <plugin>
+                 <groupId>org.jacoco</groupId>
+                 <artifactId>jacoco-maven-plugin</artifactId>
+                 <version>0.8.5</version>
+                 <configuration>
+                     <excludes>
+                     </excludes>
 
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+                 </configuration>
+                 <executions>
+                     <execution>
+                         <goals>
+                             <goal>prepare-agent</goal>
+                         </goals>
+                     </execution>
+                     <execution>
+                         <id>jacoco-report</id>
+                         <phase>test</phase>
+                         <goals>
+                             <goal>report</goal>
+                         </goals>
+                     </execution>
+                 </executions>
+             </plugin>-->
         </plugins>
     </build>
 

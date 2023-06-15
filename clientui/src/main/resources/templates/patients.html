@@ -31,7 +31,8 @@
             </form>
         </div>-->
     </div>
-    <div class="row"><h2>Patients List</h2></div>
+    <div class="row">
+        <h2>Patients</h2></div>
     <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorDeleteMessage)}" th:text="${errorDeleteMessage}"></p>
     <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorCreateMessage)}" th:text="${errorCreateMessage}"></p>
     <p class="alert alert-success" th:if="${!#strings.isEmpty(successDeleteMessage)}"
@@ -39,6 +40,7 @@
     <p class="alert alert-success" th:if="${!#strings.isEmpty(successUpdateMessage)}"
        th:text="${successUpdateMessage}"></p>
     <p class="alert alert-success" th:if="${!#strings.isEmpty(successSaveMessage)}" th:text="${successSaveMessage}"></p>
+
     <div class="row">
         <a href="/patientAdd" class="btn btn-primary btn-sm">Add New</a>
         <table class="table table-bordered">
