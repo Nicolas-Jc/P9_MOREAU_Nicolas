@@ -9,11 +9,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +39,12 @@ public class AssessmentService {
 
         String diabeteAssessment = RiskLevel.LEVEL_0.getMessage();
 
+        if (patientId == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patient Id is empty !");
         PatientModel patient = microservicePatientsProxy.getPatientById(patientId);
+        if (patient == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient Id not found !");
+
         // récupération ensemble des notes d'un patient
         List<NoteModel> listNotes = microserviceNotesProxy.getNotesByPatient(patientId);
         String sex = patient.getSex();

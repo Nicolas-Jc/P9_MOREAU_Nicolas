@@ -16,9 +16,29 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-6">
+        <!--
+                <div class="col-6">
+        -->
+        <div class="col navbar navbar-expand-lg navbar-dark bg-primary font-weight-bold">
             <a href="/">Home</a>&nbsp;|&nbsp;
             <a href="/patients">Patients</a>&nbsp;|&nbsp;
+        </div>
+        <div id="navbarContent" class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li>
+                    <!--
+                                            th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active':''}"
+                    -->
+                    class="nav-item"><a class="nav-link" href="/">Home</a>
+                </li>
+                <li>
+                    <!--
+                                            th:classappend="${#httpServletRequest.getRequestURI() == '/patients' ? 'active':''}"
+                    -->
+                    class="nav-item"><a class="nav-link"
+                                        href="/patients">Patients</a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="row">

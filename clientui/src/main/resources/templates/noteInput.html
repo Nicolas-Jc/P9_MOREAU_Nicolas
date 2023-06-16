@@ -10,24 +10,20 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <title>Note Add</title>
+    <title>Note Input</title>
 </head>
 <body>
 <div class="container">
     <form action="#" method="post" th:action="@{/noteInput}" th:object="${note}">
-        <h2 class="mt-4">Note Add</h2>
+        <h2 class="mt-4">Note Input</h2>
         <hr/>
-        <!-- Form levels error messages here -->
         <div class="form-group row ">
             <div class="col-sm-8">
                 <span class="text-danger"> </span>
             </div>
         </div>
-        <!-- note.id if already exists -->
         <input type="hidden" th:field="*{id}"/>
-        <!-- note.patientId if already exists -->
         <input type="hidden" th:field="*{patientId}"/>
-        <!-- note.date if already exists -->
         <input type="hidden" th:field="*{noteDate}"/>
 
         <div class="form-group">
