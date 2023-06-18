@@ -19,27 +19,13 @@
         <div class="col-6">
             <a href="/">Home</a>&nbsp;|&nbsp;
             <a href="/patients">Patients</a>&nbsp;|&nbsp;
-            <!--<a href="/curvePoint/list">Curve Points</a>&nbsp;|&nbsp;
-            <a href="/rating/list">Ratings</a>&nbsp;|&nbsp;
-            <a href="/trade/list">Trade</a>&nbsp;|&nbsp;
-            <a href="/ruleName/list">Rule</a>-->
         </div>
-        <!--<div class="col-6 text-right">
-            Logged in user: <b th:inline="text" class="user" th:text="${username}"> </b>
-            <form th:action="@{/app-logout}" method="POST">
-                <input type="submit" value="Logout"/>
-            </form>
-        </div>-->
     </div>
     <div class="row">
         <h2>Patients</h2></div>
-    <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorDeleteMessage)}" th:text="${errorDeleteMessage}"></p>
-    <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorCreateMessage)}" th:text="${errorCreateMessage}"></p>
-    <p class="alert alert-success" th:if="${!#strings.isEmpty(successDeleteMessage)}"
-       th:text="${successDeleteMessage}"></p>
-    <p class="alert alert-success" th:if="${!#strings.isEmpty(successUpdateMessage)}"
-       th:text="${successUpdateMessage}"></p>
-    <p class="alert alert-success" th:if="${!#strings.isEmpty(successSaveMessage)}" th:text="${successSaveMessage}"></p>
+    <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorMessage)}" th:text="${errorMessage}"></p>
+    <p class="alert alert-success" th:if="${!#strings.isEmpty(successPatientMessage)}"
+       th:text="${successPatientMessage}"></p>
 
     <div class="row">
         <a href="/patientInput" class="btn btn-primary btn-sm">Add New Patient</a>

@@ -20,11 +20,6 @@
     <div class="row">
         <form action="#" th:action="@{/patient/validate}" th:object="${patient}" method="post"
               class="form-horizontal" style="width: 100%">
-            <!-- <div class="text-danger validation-summary-valid" data-valmsg-summary="true">
-                 <ul th:if="${#fields.hasErrors('*')}">
-                     <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Problem in the input data</li>
-                 </ul>
-             </div>-->
             <input type="hidden" th:field="*{id}"/>
 
             <div class="form-group">

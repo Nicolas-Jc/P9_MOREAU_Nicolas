@@ -2,7 +2,6 @@ package com.mediscreen.clientui.controller;
 
 import com.mediscreen.clientui.model.NoteModel;
 import com.mediscreen.clientui.proxies.NotesProxy;
-import com.mediscreen.clientui.proxies.PatientsProxy;
 import feign.FeignException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,12 +25,12 @@ import java.time.format.DateTimeFormatter;
 public class NoteController {
 
     private static final Logger logger = LogManager.getLogger(NoteController.class);
+    private static final String ATTRIBUT_NAME_SUCCESS = "successMessage";
+    private static final String REDIRECT_PATIENT_ID = "redirect:/patients/";
+
 
     @Autowired
     private NotesProxy notesProxy;
-
-    @Autowired
-    private PatientsProxy patientsProxy;
 
 
     // view Note add-update
@@ -64,17 +63,17 @@ public class NoteController {
                 String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 noteBean.setNoteDate(formattedDate);
                 notesProxy.addNote(noteBean);
-                redirAttrs.addFlashAttribute("successSaveMessage",
+                redirAttrs.addFlashAttribute(ATTRIBUT_NAME_SUCCESS,
                         "Note successfully added to list");
-                return "redirect:/patients/" + noteBean.getPatientId();
+                return REDIRECT_PATIENT_ID + noteBean.getPatientId();
             } else {
                 notesProxy.updateNote(noteBean);
-                redirAttrs.addFlashAttribute("successSaveMessage",
+                redirAttrs.addFlashAttribute(ATTRIBUT_NAME_SUCCESS,
                         "Note successfully updated");
-                return "redirect:/patients/" + noteBean.getPatientId();
+                return REDIRECT_PATIENT_ID + noteBean.getPatientId();
             }
         } catch (FeignException e) {
-            redirAttrs.addFlashAttribute("errorDeleteMessage",
+            redirAttrs.addFlashAttribute("errorMessage",
                     "Error : " + e.status() + " during updating or creating note");
             logger.error("Error to create or update \"Note\" : {}", noteBean.getId());
             return "redirect:/patients";
@@ -86,14 +85,14 @@ public class NoteController {
     public String deleteNote(@PathVariable Integer patientId, @PathVariable String id, RedirectAttributes redirAttrs) {
         try {
             notesProxy.deleteNote(id);
-            redirAttrs.addFlashAttribute("successDeleteMessage",
+            redirAttrs.addFlashAttribute(ATTRIBUT_NAME_SUCCESS,
                     "Note successfully deleted");
-            return "redirect:/patients/" + patientId;
+            return REDIRECT_PATIENT_ID + patientId;
         } catch (FeignException e) {
-            redirAttrs.addFlashAttribute("errorDeleteMessage",
+            redirAttrs.addFlashAttribute("errorMessage",
                     "Error : " + e.status() + " during Note deletion");
             logger.error("Error to delete \"Note\" : {}", id);
-            return "redirect:/patients/" + patientId;
+            return REDIRECT_PATIENT_ID + patientId;
         }
     }
 

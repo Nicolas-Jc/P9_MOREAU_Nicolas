@@ -27,8 +27,8 @@
         <div class="form-group col-md-6 ">
             <h2 class="mt-4">Patient</h2>
             <hr/>
-            <p class="alert alert-success" th:if="${!#strings.isEmpty(successPatientUpdateMessage)}"
-               th:text="${successPatientUpdateMessage}"></p>
+            <p class="alert alert-success" th:if="${!#strings.isEmpty(successPatientMessage)}"
+               th:text="${successPatientMessage}"></p>
             <div class="form-group row ">
                 <label class="col-md-4 col-form-label">Last Name</label>
                 <div class="col-md-8">
@@ -101,16 +101,10 @@
         <div class="col-6 col-sm-9">
             <h2>Notes</h2>
         </div>
-        <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorDeleteMessage)}"
-           th:text="${errorDeleteMessage}"></p>
-        <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorCreateMessage)}"
-           th:text="${errorCreateMessage}"></p>
-        <p class="alert alert-success" th:if="${!#strings.isEmpty(successDeleteMessage)}"
-           th:text="${successDeleteMessage}"></p>
-        <p class="alert alert-success" th:if="${!#strings.isEmpty(successUpdateMessage)}"
-           th:text="${successUpdateMessage}"></p>
-        <p class="alert alert-success" th:if="${!#strings.isEmpty(successSaveMessage)}"
-           th:text="${successSaveMessage}"></p>
+        <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorMessage)}"
+           th:text="${errorMessage}"></p>
+        <p class="alert alert-success" th:if="${!#strings.isEmpty(successMessage)}"
+           th:text="${successMessage}"></p>
         <div class="col-6 col-sm-3 text-right">
             <a href="#" class="btn btn-success btn-lg" role="button"
                th:href="@{/noteInput(patientId=${patient.id})}">New Note</a>

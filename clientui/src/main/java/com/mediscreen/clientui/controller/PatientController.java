@@ -36,6 +36,11 @@ public class PatientController {
 
     private static final String REJECT_MESSAGE = "This patient already exists in the database";
     private static final String REDIRECT_PATIENTS = "redirect:/patients";
+    private static final String ATTRIBUT_NAME_ERROR = "errorMessage";
+    private static final String PATIENTS_STRING = "patients";
+    private static final String ATTRIBUT_NAME_PATIENT = "patient";
+    private static final String PATIENT_INPUT_TEMPLATE = "patientInput";
+    private static final String ERROR_MESSAGE = "Error : ";
 
 
     private static final Logger logger = LogManager.getLogger(PatientController.class);
@@ -50,9 +55,9 @@ public class PatientController {
     @GetMapping("/patients")
     public String showPatientsList(Model model) {
         List<PatientModel> patients = patientsProxy.getAllPatients();
-        model.addAttribute("patients", patients);
+        model.addAttribute(PATIENTS_STRING, patients);
 
-        return "patients";
+        return PATIENTS_STRING;
     }
 
 
@@ -60,11 +65,11 @@ public class PatientController {
     public String showPatientForm(@RequestParam(required = false) Integer id, Model model) {
 
         if (id == null) {
-            model.addAttribute("patient", new PatientModel());
+            model.addAttribute(ATTRIBUT_NAME_PATIENT, new PatientModel());
         } else {
-            model.addAttribute("patient", patientsProxy.getPatientById(id));
+            model.addAttribute(ATTRIBUT_NAME_PATIENT, patientsProxy.getPatientById(id));
         }
-        return "patientInput";
+        return PATIENT_INPUT_TEMPLATE;
     }
 
     // Button Add / Update Patient To List
@@ -73,7 +78,7 @@ public class PatientController {
                            BindingResult result, RedirectAttributes redirAttrs) {
         try {
             if (result.hasErrors()) {
-                return "patientInput";
+                return PATIENT_INPUT_TEMPLATE;
             }
 
             // Cas creation Patient dejà en BDD
@@ -81,23 +86,23 @@ public class PatientController {
                 result.rejectValue("lastName", "", REJECT_MESSAGE);
                 result.rejectValue("firstName", "", REJECT_MESSAGE);
                 result.rejectValue("birthDate", "", REJECT_MESSAGE);
-                return "patientInput";
+                return PATIENT_INPUT_TEMPLATE;
             }
 
             if (patientBean.getId() == null) {
                 patientsProxy.addPatient(patientBean);
-                redirAttrs.addFlashAttribute("successSaveMessage",
+                redirAttrs.addFlashAttribute("successPatientMessage",
                         "Patient successfully added to list");
                 return REDIRECT_PATIENTS;
             } else {
                 patientsProxy.updatePatient(patientBean);
-                redirAttrs.addFlashAttribute("successPatientUpdateMessage",
+                redirAttrs.addFlashAttribute("successPatientMessage",
                         "Patient successfully updated");
                 return "redirect:/patients/" + patientBean.getId();
             }
         } catch (FeignException e) {
-            redirAttrs.addFlashAttribute("errorDeleteMessage",
-                    "Error : " + e.status() + " during updating or creating patient");
+            redirAttrs.addFlashAttribute(ATTRIBUT_NAME_ERROR,
+                    ERROR_MESSAGE + e.status() + " during updating or creating patient");
             logger.error("Error to create or update \"Patient\" : {}", patientBean.getId());
             return REDIRECT_PATIENTS;
         }
@@ -108,16 +113,15 @@ public class PatientController {
         try {
             patientsProxy.deletePatient(id);
             notesProxy.deleteAllPatientNotes(id);
-            model.addAttribute("patients", patientsProxy.getAllPatients());
-            redirAttrs.addFlashAttribute("successDeleteMessage", "Patient successfully deleted");
+            model.addAttribute(PATIENTS_STRING, patientsProxy.getAllPatients());
+            redirAttrs.addFlashAttribute("successMessage", "Patient successfully deleted");
             return REDIRECT_PATIENTS;
         } catch (FeignException e) {
-            redirAttrs.addFlashAttribute("errorDeleteMessage",
-                    "Error : " + e.status() + " during deletion");
+            redirAttrs.addFlashAttribute(ATTRIBUT_NAME_ERROR,
+                    ERROR_MESSAGE + e.status() + " during deletion");
             logger.error("Error to delete \"Patient\" : {}", id);
             return REDIRECT_PATIENTS;
         }
-        //return "redirect:/patients";
     }
 
     @GetMapping("/patients/{id}")
@@ -125,7 +129,7 @@ public class PatientController {
         try {
             // Charge les infos du patient
             PatientModel patient = patientsProxy.getPatientById(id);
-            model.addAttribute("patient", patient);
+            model.addAttribute(ATTRIBUT_NAME_PATIENT, patient);
             // Charge la Liste des Notes du Patient
             List<NoteModel> listNotes = notesProxy.getNotesByPatient(id);
             model.addAttribute("listNotes", listNotes);
@@ -135,14 +139,11 @@ public class PatientController {
             model.addAttribute("diabeteAssessment", diabetesResult);
             return "patientAssess";
         } catch (FeignException e) {
-            //model.addAttribute("errorDeleteMessage", "Error Id patient does not exist");
-            // reaffichage page en cours, avec rajout
             logger.error("FeignException : " + e);
-            redirAttrs.addFlashAttribute("errorDeleteMessage",
-                    "Error : " + e.status() + " during loading patient page");
+            redirAttrs.addFlashAttribute(ATTRIBUT_NAME_ERROR,
+                    ERROR_MESSAGE + e.status() + " during loading patient page");
             return REDIRECT_PATIENTS;
         }
-        //return "patientAssess";
     }
 
 
