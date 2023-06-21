@@ -13,8 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -25,9 +29,20 @@ public class AssessmentService {
 
     private static final Logger logger = LogManager.getLogger(AssessmentService.class);
 
+    private static String filepath;
+
     // Récupération Liste termes déclencheurs
-    @Value("${triggering.words}")
-    String triggeringWords;
+    //@Value("${triggering.words}")
+    //String triggeringWords;
+    //        String triggeringWords = "H&eacutemoglobine A1C|Microalbumine|Taille|Poids|Fumeur|Anormal|Cholest&eacuterol|Vertige|Rechute|R&eacuteaction|Anticorps";
+
+   /* @Value("${triggers.url}")
+    public void setFilePath(String url) {
+        filepath = url;
+    }*/
+
+    List<String> triggersList = List.of("Hémoglobine A1C", "Microalbumine", "Taille", "Poids", "Fumeur",
+            "Anormal", "Cholestérol", "Vertige", "Rechute", "Réaction", "Anticorps");
 
     @Autowired
     private NotesProxy microserviceNotesProxy;
@@ -90,13 +105,27 @@ public class AssessmentService {
                 + diabeteAssessment;
     }
 
+   /* public List<String> readTriggersFromFile() {
+
+        List<String> triggers = new ArrayList<>();
+
+        try {
+            triggers = Files.readAllLines(Path.of(filepath));
+        } catch (IOException e) {
+            logger.error("Error reading triggers from file", e);
+        }
+        return triggers;
+    }*/
+
     // Comptage Nb Termes déclencheur dans les notes d'un patient
     private Integer getTriggersCount(List<NoteModel> listNotes) {
 
-       /* int count = 0;
+        int count = 0;
         List<String> countedTriggers = new ArrayList<>();
+        //List<String> triggersList = readTriggersFromFile();
+        logger.info("triggersList :" + triggersList);
 
-        for (NoteBean note : listNotes) {
+        for (NoteModel note : listNotes) {
             for (String trigger : triggersList) {
                 if (note.getDoctorNote().toLowerCase().contains(trigger.toLowerCase())
                         && !countedTriggers.contains(trigger.toLowerCase())) {
@@ -105,9 +134,12 @@ public class AssessmentService {
                 }
             }
         }
-        return count;*/
+        return count;
+    }
 
-        logger.debug("triggeringWords = {}", triggeringWords);
+
+
+        /*logger.debug("triggeringWords = {}", triggeringWords);
 
         int finalCounter = 0;
 
@@ -127,6 +159,6 @@ public class AssessmentService {
             logger.debug("Nb mots déclencheurs dans la Note ={}", count);
         }
         logger.debug("Total mots déclencheurs ={}", finalCounter);
-        return finalCounter;
-    }
+        return finalCounter;*/
 }
+

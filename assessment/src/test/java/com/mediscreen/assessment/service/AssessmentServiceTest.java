@@ -7,10 +7,12 @@ import com.mediscreen.assessment.model.PatientModel;
 import com.mediscreen.assessment.proxies.NotesProxy;
 import com.mediscreen.assessment.proxies.PatientsProxy;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,25 +32,33 @@ public class AssessmentServiceTest {
     PatientModel patient1;
     NoteModel note1;
     NoteModel note2;
-    List<NoteModel> listNotes;
+    List<NoteModel> listNotes = new ArrayList<>();
 
     @Mock
     private PatientsProxy patientProxy;
     @Mock
     private NotesProxy noteProxy;
+    @Spy
     @InjectMocks
     AssessmentService assessmentService;
+
+    //listNotes = new ArrayList<>();
 
 
     @BeforeEach
     void setup() {
-        assessmentService.triggeringWords = "Microalbumine|Taille|Poids|Fumeur|Anormal|Cholestérol|Vertige|Rechute|Réaction|Anticorps|Hémoglobine A1C";
+        //assessmentService.triggeringWords = "Microalbumine|Taille|Poids|Fumeur|Anormal|Cholestérol|Vertige|Rechute|Réaction|Anticorps|Hémoglobine A1C";
         //assessmentService.triggeringWords = "Microalbumine|Taille";
         //assessmentService.triggersList = Collections.singletonList("Cholestérol,Poids,Microalbumine,Vertige");
        /* assessmentService.triggersList = Collections.singletonList("Microalbumine,Taille,Poids," +
                 "Fumeur,Anormal,Cholestérol,Vertige,Rechute,Réaction,Anticorps,Hémoglobine A1C");*/
-        listNotes = new ArrayList<>();
+        //listNotes = new ArrayList<>();
+        /*List<String> triggers = List.of("Hémoglobine A1C", "Microalbumine", "Taille", "Poids", "Fumeur",
+                "Anormal", "Cholestérol", "Vertige", "Rechute", "Réaction", "Anticorps");*/
+        //doReturn(triggers).when(assessmentService).readTriggersFromFile();
+
     }
+
 
     @Test
     void diabeteAssessment_Sup30Y_1TriggerTest() {
