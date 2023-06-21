@@ -13,10 +13,10 @@ services:
     restart: always
     # variables d'environnement
     environment:
-      MYSQL_ROOT_PASSWORD: ZNPPOT5qLoF6ovALXApe
       MYSQL_DATABASE: mediscreen
-      MYSQL_USER: root
-      #MYSQL_PASSWORD: mediscreenpwd
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_USER: patient
+      MYSQL_PASSWORD: patient
 
   mongodb:
     image: mongo:latest
@@ -35,14 +35,14 @@ services:
       context: patient
       dockerfile: dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/mediscreen
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ZNPPOT5qLoF6ovALXApe
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb/mediscreen?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: patient
+      SPRING_DATASOURCE_PASSWORD: patient
+      #SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
     ports:
       - "9091:9091"
     depends_on:
-      - mysql_service
+      - mysqldb
     restart: always
 
 

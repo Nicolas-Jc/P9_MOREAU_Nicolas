@@ -114,7 +114,7 @@ public class PatientController {
             patientsProxy.deletePatient(id);
             notesProxy.deleteAllPatientNotes(id);
             model.addAttribute(PATIENTS_STRING, patientsProxy.getAllPatients());
-            redirAttrs.addFlashAttribute("successMessage", "Patient successfully deleted");
+            redirAttrs.addFlashAttribute("successPatientMessage", "Patient successfully deleted");
             return REDIRECT_PATIENTS;
         } catch (FeignException e) {
             redirAttrs.addFlashAttribute(ATTRIBUT_NAME_ERROR,
