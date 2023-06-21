@@ -2,26 +2,28 @@ version: '3'
 
 services:
   mysqldb:
-    image: mysql:8
+    image: mysql:8.0.33
     ports:
       - "3307:3306"
-    # volumes : afin de persister les données en local, dans mysql_db
+    # volumes : afin de persister les données en local, dans db_data
     volumes:
-      - db_data:/var/lib/mysql
+      - db_mysql:/var/lib/mysql
     container_name: mysqldb
     # si le serveur MySQL s'arrête, celui-ci redémarrera automatiquement
     restart: always
     # variables d'environnement
     environment:
-      MYSQL_DATABASE: mediscreen
       MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_DATABASE: mediscreen
       MYSQL_USER: patient
       MYSQL_PASSWORD: patient
+
 
   mongodb:
     image: mongo:latest
     volumes:
-      - db_data:/var/lib/mongodb
+      - db_mongo:/var/lib/mongodb
+      - mongo_config:/data/configdb
     container_name: mongodb
     ports:
       - "27018:27017"
@@ -35,10 +37,11 @@ services:
       context: patient
       dockerfile: dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb/mediscreen?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/mediscreen?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: patient
       SPRING_DATASOURCE_PASSWORD: patient
       #SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      #SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
     ports:
       - "9091:9091"
     depends_on:
@@ -55,11 +58,11 @@ services:
     ports:
       - "9092:9092"
     depends_on:
-      - mongo-db
-      #environment:
-      #SPRING_DATASOURCE_URL: jdbc:mysql://mysql_docker/mediscreen?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      #SPRING_DATASOURCE_USERNAME: mediscreenJ
-      #SPRING_DATASOURCE_PASSWORD: mediscreenpwd
+      - mongodb
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongodb
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: mediscreen
 
   assessment-microservice:
     image: assessment-microservice
@@ -67,10 +70,14 @@ services:
     build:
       context: assessment
       dockerfile: dockerfile
+    environment:
+      MICROSERVICE_PATIENTS_URL: http://patient-microservice:9091
+      MICROSERVICE_NOTES_URL: http://note-microservice:9092
     ports:
       - "9093:9093"
     depends_on:
       - patient-microservice
+      - note-microservice
     restart: always
 
   clientui-microservice:
@@ -79,6 +86,10 @@ services:
     build:
       context: clientui
       dockerfile: dockerfile
+    environment:
+      MICROSERVICE_PATIENTS_URL: http://patient-microservice:9091
+      MICROSERVICE_NOTES_URL: http://note-microservice:9092
+      MICROSERVICE_ASSESSMENT_URL: http://assessment-microservice:9093
     ports:
       - "9090:9090"
     depends_on:
@@ -88,4 +99,6 @@ services:
     restart: always
 
 volumes:
-  db_data: { }
+  db_mysql: { }
+  db_mongo: { }
+  mongo_config: { }

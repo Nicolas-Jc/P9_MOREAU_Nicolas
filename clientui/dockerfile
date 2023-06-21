@@ -1,5 +1,5 @@
 # Official OpenJDK Image Docker Hub
-FROM maven:3.8.1-jdk-11
+FROM eclipse-temurin:17
 # Add JAR to image
 ADD ./target/clientui-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 9090

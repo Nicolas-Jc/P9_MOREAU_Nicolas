@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-@FeignClient(name = "microservice-assessment", url = "${microservice-assessment.url}")
+@FeignClient(name = "microservice.assessment", url = "${microservice.assessment.url}")
 public interface AssessmentProxy {
 
     @GetMapping("/assessment/{id}")
