@@ -1,0 +1,91 @@
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql:8
+    ports:
+      - "3307:3306"
+    # volumes : afin de persister les données en local, dans mysql_db
+    volumes:
+      - db_data:/var/lib/mysql
+    container_name: mysqldb
+    # si le serveur MySQL s'arrête, celui-ci redémarrera automatiquement
+    restart: always
+    # variables d'environnement
+    environment:
+      MYSQL_ROOT_PASSWORD: ZNPPOT5qLoF6ovALXApe
+      MYSQL_DATABASE: mediscreen
+      MYSQL_USER: root
+      #MYSQL_PASSWORD: mediscreenpwd
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - db_data:/var/lib/mongodb
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    restart: always
+
+
+  patient-microservice:
+    image: patient-microservice
+    container_name: patient-microservice
+    build:
+      context: patient
+      dockerfile: dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/mediscreen
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ZNPPOT5qLoF6ovALXApe
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+    ports:
+      - "9091:9091"
+    depends_on:
+      - mysql_service
+    restart: always
+
+
+  note-microservice:
+    image: note-microservice
+    container_name: note-microservice
+    build:
+      context: note
+      dockerfile: dockerfile
+    ports:
+      - "9092:9092"
+    depends_on:
+      - mongo-db
+      #environment:
+      #SPRING_DATASOURCE_URL: jdbc:mysql://mysql_docker/mediscreen?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      #SPRING_DATASOURCE_USERNAME: mediscreenJ
+      #SPRING_DATASOURCE_PASSWORD: mediscreenpwd
+
+  assessment-microservice:
+    image: assessment-microservice
+    container_name: assessment-microservice
+    build:
+      context: assessment
+      dockerfile: dockerfile
+    ports:
+      - "9093:9093"
+    depends_on:
+      - patient-microservice
+    restart: always
+
+  clientui-microservice:
+    image: clientui-microservice
+    container_name: clientui-microservice
+    build:
+      context: clientui
+      dockerfile: dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - patient-microservice
+      - note-microservice
+      - assessment-microservice
+    restart: always
+
+volumes:
+  db_data: { }

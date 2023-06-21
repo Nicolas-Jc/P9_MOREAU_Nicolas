@@ -1,0 +1,7 @@
+# Official OpenJDK Image Docker Hub
+FROM openjdk:11
+# Add JAR to image
+ADD ./target/assessment-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 9093
+# run app
+ENTRYPOINT ["java", "-jar", "app.jar"]
