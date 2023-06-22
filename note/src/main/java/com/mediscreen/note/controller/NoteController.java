@@ -2,8 +2,7 @@ package com.mediscreen.note.controller;
 
 import com.mediscreen.note.model.Note;
 import com.mediscreen.note.service.NoteService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,7 +31,6 @@ public class NoteController {
 
     @PostMapping("/notes/add")
     public Note addNote(@Valid @RequestBody final Note noteToAdd) {
-        System.out.println("@PostMapping(\"/notes/add\") dans NoteController Module Note");
         return noteService.addNote(noteToAdd);
     }
 

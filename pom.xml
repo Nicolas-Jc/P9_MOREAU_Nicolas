@@ -6,9 +6,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.4</version>
-        <!--
-                <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
-        -->
     </parent>
     <groupId>com.mediscreen</groupId>
     <artifactId>mediscreen</artifactId>
@@ -22,9 +19,6 @@
         <java.version>17</java.version>
         <maven.compile.source>17</maven.compile.source>
         <maven.compile.target>17</maven.compile.target>
-        <!--<java.version>11</java.version>
-        <maven.compile.source>11</maven.compile.source>
-        <maven.compile.target>11</maven.compile.target>-->
     </properties>
 
     <modules>

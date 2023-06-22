@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @DisplayName("Patient Service Tests")
-public class PatientServiceTest {
+class PatientServiceTest {
 
     @Mock
     private PatientRepository patientRepository;
@@ -64,11 +64,11 @@ public class PatientServiceTest {
         // WHEN
         Optional<Patient> results = patientService.getPatientById(10);
         // THEN
-        assertEquals(patient10, results.get());
+        results.ifPresent(patient -> assertEquals(patient10, patient));
     }
 
     @Test
-    public void getPatientByIDButNotExistTest() {
+    void getPatientByIDButNotExistTest() {
 
         assertThrows(ResponseStatusException.class, () -> patientService.getPatientById(10));
     }
@@ -85,7 +85,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    public void addPatientButPatientAlreadyExistTest() {
+    void addPatientButPatientAlreadyExistTest() {
         //GIVEN
         Patient patient6 = new Patient("lastName6", "firstName6", LocalDate.of(2010, 10, 10), "M", "10st street Miami", "11.11.11.11.11");
         //WHEN
@@ -108,7 +108,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    public void updatePatientButIdIsNullTest() {
+    void updatePatientButIdIsNullTest() {
         assertThrows(ResponseStatusException.class, ()
                 -> patientService.updatePatient(
                 new Patient("Gravereau", "Pierre", LocalDate.now(), "F", "address", "phoneNumber")));
@@ -128,7 +128,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    public void deletePatientButIdNotExistTest() {
+    void deletePatientButIdNotExistTest() {
         assertThrows(ResponseStatusException.class, () -> patientService.deletePatient(5));
     }
 

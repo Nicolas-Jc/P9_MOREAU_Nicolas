@@ -37,6 +37,8 @@ public class PatientController {
     private static final String REJECT_MESSAGE = "This patient already exists in the database";
     private static final String REDIRECT_PATIENTS = "redirect:/patients";
     private static final String ATTRIBUT_NAME_ERROR = "errorMessage";
+    private static final String ATTRIBUT_NAME_SUCCESS = "successPatientMessage";
+
     private static final String PATIENTS_STRING = "patients";
     private static final String ATTRIBUT_NAME_PATIENT = "patient";
     private static final String PATIENT_INPUT_TEMPLATE = "patientInput";
@@ -47,7 +49,7 @@ public class PatientController {
 
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home() {
         return "home";
     }
 
@@ -91,12 +93,12 @@ public class PatientController {
 
             if (patientBean.getId() == null) {
                 patientsProxy.addPatient(patientBean);
-                redirAttrs.addFlashAttribute("successPatientMessage",
+                redirAttrs.addFlashAttribute(ATTRIBUT_NAME_SUCCESS,
                         "Patient successfully added to list");
                 return REDIRECT_PATIENTS;
             } else {
                 patientsProxy.updatePatient(patientBean);
-                redirAttrs.addFlashAttribute("successPatientMessage",
+                redirAttrs.addFlashAttribute(ATTRIBUT_NAME_SUCCESS,
                         "Patient successfully updated");
                 return "redirect:/patients/" + patientBean.getId();
             }
@@ -114,7 +116,7 @@ public class PatientController {
             patientsProxy.deletePatient(id);
             notesProxy.deleteAllPatientNotes(id);
             model.addAttribute(PATIENTS_STRING, patientsProxy.getAllPatients());
-            redirAttrs.addFlashAttribute("successPatientMessage", "Patient successfully deleted");
+            redirAttrs.addFlashAttribute(ATTRIBUT_NAME_SUCCESS, "Patient successfully deleted");
             return REDIRECT_PATIENTS;
         } catch (FeignException e) {
             redirAttrs.addFlashAttribute(ATTRIBUT_NAME_ERROR,
@@ -139,7 +141,7 @@ public class PatientController {
             model.addAttribute("diabeteAssessment", diabetesResult);
             return "patientAssess";
         } catch (FeignException e) {
-            logger.error("FeignException : " + e);
+            logger.error("FeignException : {}", e.toString());
             redirAttrs.addFlashAttribute(ATTRIBUT_NAME_ERROR,
                     ERROR_MESSAGE + e.status() + " during loading patient page");
             return REDIRECT_PATIENTS;

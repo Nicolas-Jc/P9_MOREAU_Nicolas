@@ -6,8 +6,6 @@ import com.mediscreen.assessment.model.PatientModel;
 
 import com.mediscreen.assessment.proxies.NotesProxy;
 import com.mediscreen.assessment.proxies.PatientsProxy;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,12 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-public class AssessmentServiceTest {
+class AssessmentServiceTest {
 
     PatientModel patient1;
     NoteModel note1;
@@ -42,28 +39,10 @@ public class AssessmentServiceTest {
     @InjectMocks
     AssessmentService assessmentService;
 
-    //listNotes = new ArrayList<>();
-
-
-    @BeforeEach
-    void setup() {
-        //assessmentService.triggeringWords = "Microalbumine|Taille|Poids|Fumeur|Anormal|Cholestérol|Vertige|Rechute|Réaction|Anticorps|Hémoglobine A1C";
-        //assessmentService.triggeringWords = "Microalbumine|Taille";
-        //assessmentService.triggersList = Collections.singletonList("Cholestérol,Poids,Microalbumine,Vertige");
-       /* assessmentService.triggersList = Collections.singletonList("Microalbumine,Taille,Poids," +
-                "Fumeur,Anormal,Cholestérol,Vertige,Rechute,Réaction,Anticorps,Hémoglobine A1C");*/
-        //listNotes = new ArrayList<>();
-        /*List<String> triggers = List.of("Hémoglobine A1C", "Microalbumine", "Taille", "Poids", "Fumeur",
-                "Anormal", "Cholestérol", "Vertige", "Rechute", "Réaction", "Anticorps");*/
-        //doReturn(triggers).when(assessmentService).readTriggersFromFile();
-
-    }
-
 
     @Test
     void diabeteAssessment_Sup30Y_1TriggerTest() {
-      /*  patient1 = new PatientBean(1, "LastName", "Firstname",
-                LocalDate.now().minusYears(40), "F", "TestAdress", "07.07.07.07.07");*/
+
         patient1 = new PatientModel(1, "LastName", "FirstName",
                 LocalDate.now(Clock.systemUTC()).minusYears(40), "F", "TestAdress", "07.07.07.07.07");
 
@@ -136,10 +115,7 @@ public class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        //ACT:
         String result = assessmentService.diabeteAssessment(1);
-
-        //ASSERT:
         assertEquals("Patient: LastName FirstName (age 29) diabetes assessment is: None", result);
     }
 

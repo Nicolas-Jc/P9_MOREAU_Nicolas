@@ -11,7 +11,6 @@ public class AssessmentController {
     @Autowired
     private AssessmentService assessmentService;
 
-    //@PostMapping("/assessment/id")
     @GetMapping("/assessment/{id}")
     public String getRiskLevelByPatientId(@PathVariable int id) {
         return assessmentService.diabeteAssessment(id);

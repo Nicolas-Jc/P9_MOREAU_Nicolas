@@ -3,10 +3,8 @@ package com.mediscreen.note.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mediscreen.note.model.Note;
-import com.mediscreen.note.repository.NoteRepository;
 import com.mediscreen.note.service.NoteService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +34,6 @@ class NoteControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private NoteRepository patientRepository;
 
     @MockBean
     private NoteService noteService;
@@ -109,8 +104,6 @@ class NoteControllerTest {
         List<Note> noteResult = objectMapper.readValue(mvcResult.getResponse()
                 .getContentAsString(), new TypeReference<>() {
         });
-     /*   assertEquals(2, noteResult.getPatientId());
-        assertEquals("Comment Note2", noteResult.getDoctorNote());*/
         assertEquals(3, noteResult.size());
 
     }
@@ -132,19 +125,6 @@ class NoteControllerTest {
                         .content(objectMapper.writeValueAsString(note1))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andReturn();
-
-        assertNotNull(mvcResult);
-    }
-
-    @Disabled
-    @Test
-    void TestAddNote() throws Exception {
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/notes/add")
-                        .content(objectMapper.writeValueAsString(note1))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
                 .andReturn();
 
         assertNotNull(mvcResult);

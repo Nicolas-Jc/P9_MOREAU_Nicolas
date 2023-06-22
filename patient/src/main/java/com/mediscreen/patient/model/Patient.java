@@ -39,9 +39,7 @@ public class Patient {
 
     @Size(max = 1)
     @Pattern(regexp = "^[M|F]$", message = "M : Male / F : Female")
-/*
-    @NotBlank(message = "Sex is mandatory")
-*/
+
     @Pattern(regexp = "[FM]")
     @Column(nullable = false, length = 1)
     @NotBlank(message = "Sex is mandatory")
@@ -53,9 +51,6 @@ public class Patient {
 
     @Size(max = 30)
     @Column(name = "phone", length = 20)
-    // Pattern : "111-222-333"
-    // @Pattern(regexp = "^(33|0)(6|7|9)\\d{8}$"
-    //, message = "Please Enter a valid phone number")
     private String phoneNumber;
 
 

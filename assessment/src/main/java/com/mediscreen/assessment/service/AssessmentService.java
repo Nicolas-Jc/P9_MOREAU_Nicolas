@@ -8,38 +8,22 @@ import com.mediscreen.assessment.proxies.PatientsProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Service
 public class AssessmentService {
 
     private static final Logger logger = LogManager.getLogger(AssessmentService.class);
 
-    private static String filepath;
-
-    // Récupération Liste termes déclencheurs
-    //@Value("${triggering.words}")
-    //String triggeringWords;
-    //        String triggeringWords = "H&eacutemoglobine A1C|Microalbumine|Taille|Poids|Fumeur|Anormal|Cholest&eacuterol|Vertige|Rechute|R&eacuteaction|Anticorps";
-
-   /* @Value("${triggers.url}")
-    public void setFilePath(String url) {
-        filepath = url;
-    }*/
 
     List<String> triggersList = List.of("Hémoglobine A1C", "Microalbumine", "Taille", "Poids", "Fumeur",
             "Anormal", "Cholestérol", "Vertige", "Rechute", "Réaction", "Anticorps");
@@ -96,7 +80,6 @@ public class AssessmentService {
         }
 
         diabeteAssessment = (diabeteAssessment != null) ? diabeteAssessment : RiskLevel.LEVEL_0.getMessage();
-        // Mise en forme réponse
         return "Patient: "
                 + patient.getLastName()
                 + " "
@@ -105,25 +88,13 @@ public class AssessmentService {
                 + diabeteAssessment;
     }
 
-   /* public List<String> readTriggersFromFile() {
-
-        List<String> triggers = new ArrayList<>();
-
-        try {
-            triggers = Files.readAllLines(Path.of(filepath));
-        } catch (IOException e) {
-            logger.error("Error reading triggers from file", e);
-        }
-        return triggers;
-    }*/
-
-    // Comptage Nb Termes déclencheur dans les notes d'un patient
     private Integer getTriggersCount(List<NoteModel> listNotes) {
 
         int count = 0;
+        // Liste intermédiaire afin de ne pas compter 2 fois un même Trigger présent sur la même Note
+        // ou sur d'autres Notes du patient
         List<String> countedTriggers = new ArrayList<>();
-        //List<String> triggersList = readTriggersFromFile();
-        logger.info("triggersList :" + triggersList);
+        logger.info("triggersList : {}", triggersList);
 
         for (NoteModel note : listNotes) {
             for (String trigger : triggersList) {
@@ -137,28 +108,5 @@ public class AssessmentService {
         return count;
     }
 
-
-
-        /*logger.debug("triggeringWords = {}", triggeringWords);
-
-        int finalCounter = 0;
-
-        Pattern p = Pattern.compile(
-                triggeringWords,
-                Pattern.CASE_INSENSITIVE);
-
-        for (NoteModel note : listNotes) {
-            logger.debug("DoctorNote = {}", note.getDoctorNote());
-            Matcher m = p.matcher(note.getDoctorNote());
-
-            int count = 0;
-            while (m.find()) {
-                count++;
-            }
-            finalCounter += count;
-            logger.debug("Nb mots déclencheurs dans la Note ={}", count);
-        }
-        logger.debug("Total mots déclencheurs ={}", finalCounter);
-        return finalCounter;*/
 }
 

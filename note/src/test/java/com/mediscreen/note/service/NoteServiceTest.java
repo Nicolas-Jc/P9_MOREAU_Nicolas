@@ -3,7 +3,6 @@ package com.mediscreen.note.service;
 import com.mediscreen.note.model.Note;
 import com.mediscreen.note.repository.NoteRepository;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +23,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @DisplayName("Note Service Tests")
-public class NoteServiceTest {
+class NoteServiceTest {
 
     @Mock
     private NoteRepository noteRepository;
@@ -67,11 +65,11 @@ public class NoteServiceTest {
         // WHEN
         Optional<Note> results = noteService.getNoteById("33");
         // THEN
-        assertEquals(note, results.get());
+        results.ifPresent(value -> assertEquals(note, value));
     }
 
     @Test
-    public void getNoteByIDButNotExistTest() {
+    void getNoteByIDButNotExistTest() {
 
         assertThrows(ResponseStatusException.class, () -> noteService.getNoteById("10"));
     }
@@ -99,7 +97,6 @@ public class NoteServiceTest {
         //GIVEN
         Note note5 = new Note("XXXXXXXXXXXXXXXXXXXXXXX", 11, "2010-10-10", "Comment Note Patient 11");
         //WHEN
-        //when(noteRepository.i(note5)).thenReturn(note5);
         when(noteRepository.insert(any(Note.class))).thenReturn(note5);
         Note response = noteService.addNote(note5);
         // THEN
@@ -120,7 +117,7 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void updateNoteButIdIsNullTest() {
+    void updateNoteButIdIsNullTest() {
         assertThrows(ResponseStatusException.class, ()
                 -> noteService.updateNote(
                 new Note("XXXXXXXXXXXXXXXXXXXXXX", 11, "2010-10-10", "Comment Note Patient 11")));
@@ -140,7 +137,7 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void deleteNoteButIdNotExistTest() {
+    void deleteNoteButIdNotExistTest() {
         assertThrows(ResponseStatusException.class, () -> noteService.deleteNoteById("PPPPPPPPPPPPP"));
     }
 
@@ -150,9 +147,6 @@ public class NoteServiceTest {
         note1 = new Note(1, "2000-01-01", "Comment Note1");
         note2 = new Note(2, "2000-02-02", "Comment Note2");
         note3 = new Note(2, "2000-03-03", "Comment Note3");
-        Note note4 = new Note(3, "2000-03-03", "Comment Note4");
-        Note note5 = new Note(3, "2000-03-03", "Comment Note5");
-        Note note6 = new Note(3, "2000-03-03", "Comment Note6");
         // WHEN
         noteService.deleteAllNotesByPatientId(2);
         // THEN

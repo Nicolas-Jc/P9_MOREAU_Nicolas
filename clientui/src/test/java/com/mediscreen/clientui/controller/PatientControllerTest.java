@@ -7,7 +7,6 @@ import com.mediscreen.clientui.proxies.AssessmentProxy;
 import com.mediscreen.clientui.proxies.NotesProxy;
 import com.mediscreen.clientui.proxies.PatientsProxy;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,22 +110,6 @@ class PatientControllerTest {
         verify(patientsProxy, times(1)).getPatientById(1);
     }
 
-    @Disabled
-    @Test
-    void showPatientForm_NewPatient() throws Exception {
-
-
-        mockMvc.perform(get("/patientInput"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("patientInput"))
-                .andExpect(model().size(1))
-                .andExpect(model().attributeExists("patient"))
-                .andExpect(model().attribute("patient", new PatientModel())) //must be equal to empty PatientBean
-        ;
-        verify(patientsProxy, never()).getPatientById(any(Integer.class));
-
-    }
-
     @Test
     void validateUpdatePatientTest() throws Exception {
 
@@ -146,35 +129,7 @@ class PatientControllerTest {
         ArgumentCaptor<PatientModel> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientModel.class);
         verify(patientsProxy, times(1)).updatePatient(patientBeanArgumentCaptor.capture());
         PatientModel patientBeanCaptured = patientBeanArgumentCaptor.getValue();
-        //assertEquals(patientBean1, patientBeanCaptured);
         assertEquals(1, patientBeanCaptured.getId());
-
-    }
-
-
-    @Disabled
-    @Test
-    void validate_NewPatientTest() throws Exception {
-        //NMO NMO NMO NMO
-        when(patientsProxy.checkExistPatient(any(PatientModel.class))).thenReturn(Boolean.FALSE);
-        patientBean1.setId(null);
-
-        mockMvc.perform(post("/patient/validate")
-                        .param("lastName", "lastName1")
-                        .param("firstName", "firstName1")
-                        .param("birthDate", "2000-01-10")
-                        .param("sex", "M")
-                        .param("address", "1st street New York")
-                        .param("phoneNumber", "111-222-333")
-                )
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/patients"))
-        ;
-
-        ArgumentCaptor<PatientModel> patientBeanArgumentCaptor = ArgumentCaptor.forClass(PatientModel.class);
-        verify(patientsProxy, times(1)).addPatient(patientBeanArgumentCaptor.capture());
-        PatientModel patientBeanCaptured = patientBeanArgumentCaptor.getValue();
-        assertEquals(patientBean1, patientBeanCaptured);
 
     }
 

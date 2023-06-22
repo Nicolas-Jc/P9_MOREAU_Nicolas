@@ -3,9 +3,7 @@ package com.mediscreen.clientui.controller;
 
 import com.mediscreen.clientui.model.NoteModel;
 import com.mediscreen.clientui.model.PatientModel;
-import com.mediscreen.clientui.proxies.AssessmentProxy;
 import com.mediscreen.clientui.proxies.NotesProxy;
-import com.mediscreen.clientui.proxies.PatientsProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,12 +31,7 @@ class NoteControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private PatientsProxy patientsProxy;
-    @MockBean
     private NotesProxy notesProxy;
-
-    @MockBean
-    private AssessmentProxy assessmentProxy;
 
     PatientModel patientBean1;
     PatientModel patientBean2;
@@ -95,7 +89,6 @@ class NoteControllerTest {
         ArgumentCaptor<NoteModel> noteBeanArgumentCaptor = ArgumentCaptor.forClass(NoteModel.class);
         verify(notesProxy, times(1)).updateNote(noteBeanArgumentCaptor.capture());
         NoteModel noteBeanCaptured = noteBeanArgumentCaptor.getValue();
-        //assertEquals(noteBean2, noteBeanCaptured);
         assertEquals("mdb2", noteBeanCaptured.getId());
 
     }
@@ -116,8 +109,7 @@ class NoteControllerTest {
         ArgumentCaptor<NoteModel> noteBeanArgumentCaptor = ArgumentCaptor.forClass(NoteModel.class);
         verify(notesProxy, times(1)).addNote(noteBeanArgumentCaptor.capture());
         NoteModel noteBeanCaptured = noteBeanArgumentCaptor.getValue();
-        //assertEquals(noteBean1, noteBeanCaptured);
-        assertEquals(null, noteBeanCaptured.getId());
+        assertNull(noteBeanCaptured.getId());
     }
 
     @Test
