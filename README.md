@@ -34,7 +34,7 @@ Le back-end est développé avec _Spring Boot_ est divisé en 4 _microservices_ 
 
 ### Port: 9093
 
-- [Assessment](assessment) : détermine le niveau de risque (diabète) chez les patients .
+- [Assessment](assessment) : détermine le niveau de risque (diabète) d'un patient .
 
 ## Installation
 
@@ -66,15 +66,15 @@ A la racine du projet, lancer les 2 commandes suivantes séquentiellement :
 
 ## Note
 
-![Jacoco Note](https://user-images.githubusercontent.com/79265943/161596397-07a735f5-5d97-453c-88b3-c0fb15ae235a.png)
+![Jacoco Note](.Jacoco-reports/Note.png)
 
 ## Assessment
 
-![Jacoco Assessment](https://user-images.githubusercontent.com/79265943/161596524-8ea78fb8-6d12-4dcc-bbbe-b9502b81960c.png)
+![Jacoco Assessment](.Jacoco-reports/Assessment.png)
 
 ## ClientUI
 
-![Jacoco clientUI](https://user-images.githubusercontent.com/79265943/161596557-a21b0ad2-77dd-47b4-a21d-38ec200b5882.png)
+![Jacoco clientUI](.Jacoco-reports/ClientUI.png)
 
 # API ENDPOINTS DOCUMENTATION
 
