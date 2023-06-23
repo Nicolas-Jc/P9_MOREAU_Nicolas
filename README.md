@@ -9,7 +9,6 @@ risque les plus exposés au diabète de type 2.
 <img src="https://img.shields.io/badge/-SPRING%20WEB-397200?style=for-the-badge&logo=spring&logoColor=white">
 <br> <img src="https://img.shields.io/badge/-SPRING%20DATA%20JPA-8db411?style=for-the-badge&logo=spring&logoColor=white">
 <img src="https://img.shields.io/badge/-SPRING%20DATA%20MONGODB-8db411?style=for-the-badge&logo=spring&logoColor=white">
-<br><img src="https://img.shields.io/badge/-SPRING%20CLOUD%20GATEWAY-8db411?style=for-the-badge&logo=spring&logoColor=white">
 <br><img src="https://img.shields.io/badge/-MYSQL-006189?style=for-the-badge&logo=mysql&logoColor=white"> 
 <img src="https://img.shields.io/badge/-MONGODB-6eb442?style=for-the-badge&logo=mongodb&logoColor=white">
 <br><img src="https://img.shields.io/badge/-MAVEN-black?style=for-the-badge&logo=apachemaven&logoColor=white">
@@ -22,9 +21,9 @@ risque les plus exposés au diabète de type 2.
 Le back office, créé avec _Spring Boot_ est divisée en plusieurs _microservices_ :
 
 - [Patient](patient) : gère les données qui concernent l'identité des patients.
-- [Notes](Notes) : gère l'historique des consultations des patients
+- [Note](Notes) : gère l'historique des consultations des patients
 - [Assessment](Assessment) : calcule le taux de risque de diabète chez les patients .
-- [clientui](ui%2Fmediscreen-ui) : l'UI en Angular
+- [Clientui](ui%2Fmediscreen-ui) : l'UI en Angular
 
 ## Installation
 
@@ -32,7 +31,7 @@ Le back office, créé avec _Spring Boot_ est divisée en plusieurs _microservic
   clone [https://github.com/Nicolas-Jc/P9_MOREAU_Nicolas_Mediscreen.git](https://github.com/Nicolas-Jc/P9_MOREAU_Nicolas_Mediscreen.git)
 
 
-- Créer une base de données MySQL et adapter les fichiers de configuration :
+- Créer une base de données MySQL et adapter le fichier de configuration :
     - [application.properties](mAuthentication%2Fsrc%2Fmain%2Fresources%2Fapplication.properties) (mAuthentication)
 
 
