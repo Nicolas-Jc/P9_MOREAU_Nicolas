@@ -36,6 +36,10 @@ Le back-end est développé avec _Spring Boot_ est divisé en 4 _microservices_ 
 
 - [Assessment](assessment) : détermine le niveau de risque (diabète) d'un patient .
 
+## Diagramme d'Architecture
+
+![Diagramme d'Architecture](ArchitecturalDiagram/Diagramme d'Architecture.PNG)
+
 ## Installation
 
 - Cloner ce repository : git
@@ -58,7 +62,7 @@ A la racine du projet, lancer les 2 commandes suivantes séquentiellement :
 - mvn clean install -DskipTests
 - docker-compose up
 
-## Test Report
+## Rapports de Test
 
 ### Patient
 
@@ -76,7 +80,7 @@ A la racine du projet, lancer les 2 commandes suivantes séquentiellement :
 
 ![Jacoco clientUI](.Jacoco-reports/ClientUI.png)
 
-## API Endpoints Document
+## API Endpoints Documentation
 
 Swagger link for Patient-microservice : http://localhost:9011/swagger-ui.html#/
 
