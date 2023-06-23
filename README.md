@@ -20,10 +20,10 @@ risque les plus exposés au diabète de type 2.
 
 Le back office, créé avec _Spring Boot_ est divisée en plusieurs _microservices_ :
 
-- [Patient](patient) : gère les données qui concernent l'identité des patients.
-- [Note](Notes) : gère l'historique des consultations des patients
-- [Assessment](Assessment) : calcule le taux de risque de diabète chez les patients .
-- [Clientui](ui%2Fmediscreen-ui) : l'UI en Angular
+- [Patient](patient) : gère les données sur l'identité des patients (création, mise à jour, suppression ...).
+- [Note](note) : gère la traçabilité des consultations des patients (Notes des médecins)
+- [Assessment](assessment) : calcule le taux de risque de diabète chez les patients .
+- [Clientui](clientui) : l'UI en Thymeleaf
 
 ## Installation
 
@@ -32,11 +32,11 @@ Le back office, créé avec _Spring Boot_ est divisée en plusieurs _microservic
 
 
 - Créer une base de données MySQL et adapter le fichier de configuration :
-    - [application.properties](mAuthentication%2Fsrc%2Fmain%2Fresources%2Fapplication.properties) (mAuthentication)
+    - [application.properties](application.properties) (patient-microservice)
 
 
 - Créer unhe base de données MongoDB et adapter les fichiers de configuration :
-    - [application.properties](mNotes%2Fsrc%2Fmain%2Fresources%2Fapplication.properties) (mNotes)
+    - [application.properties](application.properties) (note-microservice)
 
 ## Docker compose
 
