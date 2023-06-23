@@ -32,11 +32,11 @@ Le back office, créé avec _Spring Boot_ est divisée en plusieurs _microservic
 
 
 - Créer une base de données MySQL et adapter le fichier de configuration :
-    - [application.properties](application.properties) (patient-microservice)
+    - [application.properties](patient/src/main/resources/application.properties) (patient-microservice)
 
 
 - Créer unhe base de données MongoDB et adapter les fichiers de configuration :
-    - [application.properties](application.properties) (note-microservice)
+    - [application.properties](note/src/main/resources/application.properties) (note-microservice)
 
 ## Docker compose
 
