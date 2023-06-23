@@ -59,8 +59,8 @@ Pour lancer le projet avec Docker compose:
 
 A la racine du projet, lancer les 2 commandes suivantes séquentiellement :
 
-- mvn clean install -DskipTests
-- docker-compose up
+- **mvn clean install -DskipTests**
+- **docker-compose up**
 
 ## Rapports de Test
 
