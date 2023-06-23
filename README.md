@@ -58,25 +58,25 @@ A la racine du projet, lancer les 2 commandes suivantes séquentiellement :
 - mvn clean install -DskipTests
 - docker-compose up
 
-# Test Report
+## Test Report
 
-## Patient
+### Patient
 
 ![Jacaco Patient](.Jacoco-reports/Patient.png)
 
-## Note
+### Note
 
 ![Jacoco Note](.Jacoco-reports/Note.png)
 
-## Assessment
+### Assessment
 
 ![Jacoco Assessment](.Jacoco-reports/Assessment.png)
 
-## ClientUI
+### ClientUI
 
 ![Jacoco clientUI](.Jacoco-reports/ClientUI.png)
 
-# API ENDPOINTS DOCUMENTATION
+## API Endpoints Document
 
 Swagger link for Patient-microservice : http://localhost:9011/swagger-ui.html#/
 
