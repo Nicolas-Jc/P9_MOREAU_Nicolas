@@ -36,9 +36,9 @@ Le back-end est développé avec _Spring Boot_ est divisé en 4 _microservices_ 
 
 - [Assessment](assessment) : détermine le niveau de risque (diabète) d'un patient .
 
-## Diagramme d'Architecture
+## Architecture Logiciel
 
-![Diagramme d'Architecture](ArchitecturalDiagram/Diagramme d'Architecture.PNG)
+![Diagramme d'Architecture](ArchitectureLogiciel/DiagrammeArchitecture.PNG)
 
 ## Installation
 
