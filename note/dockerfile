@@ -1,0 +1,7 @@
+# Official OpenJDK Image Docker Hub
+FROM eclipse-temurin:17
+# Add JAR to image
+ADD ./target/note-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 9092
+# run app
+ENTRYPOINT ["java", "-jar", "app.jar"]

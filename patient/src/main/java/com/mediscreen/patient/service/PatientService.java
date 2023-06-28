@@ -1,16 +1,16 @@
 package com.mediscreen.patient.service;
 
-import com.mediscreen.patient.exception.BadRequestException;
-import com.mediscreen.patient.exception.DataAlreadyExistException;
 import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.repository.PatientRepository;
 
-import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,12 +26,12 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    public Optional<Patient> getPatientById(int patientId) throws NotFoundException {
+    public Optional<Patient> getPatientById(int patientId) {
 
         logger.debug("Service: getPatientById - called");
         Optional<Patient> patient = patientRepository.findById(patientId);
         if (patient.isEmpty())
-            throw new NotFoundException("The Id patient : " + patientId + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Id patient : " + patientId + " does not exist");
         return patient;
     }
 
@@ -46,12 +46,14 @@ public class PatientService {
     public Patient addPatient(Patient patientToAdd) {
         logger.debug("Service : add Patient - called");
 
-        Boolean patientToCheck = patientRepository.findByLastNameAndFirstNameAndBirthDate(patientToAdd.getLastName(),
+        Boolean patientToCheck = patientRepository.findByLastNameAndFirstNameAndBirthDate(
+                patientToAdd.getLastName(),
                 patientToAdd.getFirstName(),
                 patientToAdd.getBirthDate());
 
-        if (Boolean.TRUE.equals(patientToCheck)) {
-            throw new DataAlreadyExistException("The patient " + patientToAdd.getFirstName()
+        if (patientToCheck.equals(Boolean.TRUE)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The patient "
+                    + patientToAdd.getFirstName()
                     + " / " + patientToAdd.getBirthDate() + " already exists");
         }
 
@@ -60,28 +62,37 @@ public class PatientService {
         return patientToSave;
     }
 
-    public Patient updatePatient(Patient patient) throws BadRequestException, NotFoundException {
+    public Patient updatePatient(Patient patient) {
 
         logger.debug("Service : update Patient - supply");
-        if (patient.getId() == null) throw new BadRequestException("Patient id is empty!");
+        if (patient.getId() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Patient Id is empty !");
 
         Patient patientToUpdate = patientRepository.findById(patient.getId()).orElse(null);
         if (patientToUpdate == null) {
-            throw new NotFoundException("Patient Id : " + patient.getId() + " cannot be found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient Id : " + patient.getId() + " cannot be found");
+
         }
 
         logger.info("Service : update Patient - check");
         return patientRepository.save(patient);
     }
 
-    public void deletePatient(int patientId) throws NotFoundException {
+    public void deletePatient(int patientId) {
 
         logger.debug("Service : delete Patient - supply");
 
         if (!patientRepository.existsById(patientId))
-            throw new NotFoundException("Deletion impossible, patient id : "
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Deletion impossible, patient id : "
                     + patientId + " cannot be found");
         patientRepository.deleteById(patientId);
         logger.info("Service : delete Patient - check");
+    }
+
+    public Boolean checkExistsPatient(String lastName, String firstName, LocalDate birthDate) {
+        return patientRepository.findByLastNameAndFirstNameAndBirthDate(
+                lastName,
+                firstName,
+                birthDate);
     }
 }
