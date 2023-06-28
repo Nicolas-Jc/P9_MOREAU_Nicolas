@@ -118,6 +118,7 @@
         <tr>
             <th class="text-left">Date</th>
             <th class="text-left">Doctor note</th>
+            <th class="text-left"></th>
         </tr>
         </thead>
         <tbody>
@@ -127,10 +128,10 @@
             <td>
                 <form method="post" action="#"
                       th:action="@{'/patients/{patientId}/notes/delete/{id}'(patientId=${patientNote.patientId},id=${patientNote.id})}"
-                      class="form-inline justify-content-end">
-                    <a href="#" class="btn btn-info" role="button"
+                      class="form-inline justify-content-center">
+                    <a href="#" class="btn btn-info" role="button" style="width: 5em"
                        th:href="@{/noteInput(id=${patientNote.id},patientId=${patientNote.patientId})}">Update</a>
-                    <button type="submit" class="btn btn-danger"
+                    <button type="submit" class="btn btn-danger mt-1" style="width: 5em"
                             onclick="return confirm('Do you confirm the deletion ?')">Delete
                     </button>
                 </form>

@@ -56,12 +56,12 @@
                 <td><span th:text="${patient.address}"></span></td>
                 <td><span th:text="${patient.phoneNumber}"></span></td>
                 <td>
-                    <form method="get" action="#" th:action="@{/patients/delete/{id}(id=${patient.id})}"
+                    <form method="get" action="#"
+                          th:action="@{'/patients/delete/{id}'(id=${patient.id})}"
                           class="form-inline justify-content-center">
                         <a href="#" class="btn btn-info" role="button"
                            th:href="@{/patients/{id}(id=${patient.id})}">Select</a>
                         <button type="submit" class="btn btn-danger"
-                                th:href="@{/patients/delete/{id}(id=${patient.id})}"
                                 onclick="return confirm('Do you confirm the deletion ?')">
                             Delete
                         </button>
