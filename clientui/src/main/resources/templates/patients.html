@@ -14,14 +14,20 @@
     <title>Patients List</title>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <a href="/">Home</a>&nbsp;|&nbsp;
-            <a href="/patients">Patients</a>&nbsp;|&nbsp;
-        </div>
+<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Patients</a>
+            </li>
+        </ul>
     </div>
-    <div class="row">
+</nav>
+<div class="container">
+    <div class="row text-center">
         <h2>Patients</h2></div>
     <p class="alert alert-danger" th:if="${!#strings.isEmpty(errorMessage)}" th:text="${errorMessage}"></p>
     <p class="alert alert-success" th:if="${!#strings.isEmpty(successPatientMessage)}"
@@ -30,7 +36,7 @@
     <div class="row">
         <a href="/patientInput" class="col-2 fw-bold btn btn-primary btn-sm mb-2">Add New Patient</a>
         <table class="table table-bordered">
-            <thead class="table-primary">
+            <thead class="table-secondary">
             <tr>
                 <th>Last Name</th>
                 <th>First Name</th>
@@ -38,6 +44,7 @@
                 <th>Sex</th>
                 <th>Address</th>
                 <th>Phone Number</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -48,10 +55,17 @@
                 <td><span th:text="${patient.sex}"></span></td>
                 <td><span th:text="${patient.address}"></span></td>
                 <td><span th:text="${patient.phoneNumber}"></span></td>
-                <td style="width: 15%" class="text-center">
-                    <a th:href="@{/patients/{id}(id=${patient.id})}">Select</a>&nbsp;|&nbsp;
-                    <a th:href="@{/patients/delete/{id}(id=${patient.id})}"
-                       onclick="return confirm('Do you confirm the deletion ?')">Delete</a>
+                <td>
+                    <form method="get" action="#" th:action="@{/patients/delete/{id}(id=${patient.id})}"
+                          class="form-inline justify-content-center">
+                        <a href="#" class="btn btn-info" role="button"
+                           th:href="@{/patients/{id}(id=${patient.id})}">Select</a>
+                        <button type="submit" class="btn btn-danger"
+                                th:href="@{/patients/delete/{id}(id=${patient.id})}"
+                                onclick="return confirm('Do you confirm the deletion ?')">
+                            Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
             </tbody>
