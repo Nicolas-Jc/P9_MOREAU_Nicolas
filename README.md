@@ -82,8 +82,8 @@ A la racine du projet, lancer les 2 commandes suivantes séquentiellement :
 
 ## API Endpoints Documentation
 
-Swagger link for Patient-microservice : http://localhost:9091/swagger-ui/
+Swagger link for Patient-microservice : http://localhost:9091/swagger-ui/#/
 
-Swagger link for Note-microservice : http://localhost:9092/swagger-ui/
+Swagger link for Note-microservice : http://localhost:9092/swagger-ui/#/
 
-Swagger link for Assessment-microservice : http://localhost:9093/swagger-ui/
+Swagger link for Assessment-microservice : http://localhost:9093/swagger-ui/#/
