@@ -5,14 +5,14 @@ risque au niveau diabète de type 2.
 
 ## Stack technique
 
-<img src="https://img.shields.io/badge/-JAVA%2017-00A7BB?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/-SPRING%20BOOT%202.7.4-6eb442?style=for-the-badge&logo=spring&logoColor=white">
-<img src="https://img.shields.io/badge/-SPRING%20WEB-397200?style=for-the-badge&logo=spring&logoColor=white">
-<img src="https://img.shields.io/badge/-SPRING%20DATA%20JPA-8db411?style=for-the-badge&logo=spring&logoColor=white">
-<img src="https://img.shields.io/badge/-SPRING%20DATA%20MONGODB-8db411?style=for-the-badge&logo=spring&logoColor=white">
-<br><img src="https://img.shields.io/badge/-MYSQL-006189?style=for-the-badge&logo=mysql&logoColor=white"> 
-<img src="https://img.shields.io/badge/-MONGODB-6eb442?style=for-the-badge&logo=mongodb&logoColor=white">
-<br><img src="https://img.shields.io/badge/-MAVEN-black?style=for-the-badge&logo=apachemaven&logoColor=white">
-<img src="https://img.shields.io/badge/-JACOCO-810a00?style=for-the-badge">
+<img src="https://img.shields.io/badge/-JAVA%2017-467191?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/-SPRING%20BOOT%202.7.4-69ad3c?style=for-the-badge&logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/-SPRING%20WEB-3d8331?style=for-the-badge&logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/-SPRING%20DATA%20JPA-6aad3d?style=for-the-badge&logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/-SPRING%20DATA%20MONGODB-4d9345?style=for-the-badge&logo=spring&logoColor=white">
+<br><img src="https://img.shields.io/badge/-MYSQL-005e86?style=for-the-badge&logo=mysql&logoColor=white"> 
+<img src="https://img.shields.io/badge/-MONGODB-00e661?style=for-the-badge&logo=mongodb&logoColor=white">
+<br><img src="https://img.shields.io/badge/-MAVEN-c11f36?style=for-the-badge&logo=apachemaven&logoColor=white">
+<img src="https://img.shields.io/badge/-JACOCO-7c0a00?style=for-the-badge">
 <br><img src="https://img.shields.io/badge/-THYMELEAF-005f0f?style=for-the-badge&logo=thymeleaf&logoColor=white"> 
 <br><img src="https://img.shields.io/badge/-DOCKER-2496ed?style=for-the-badge&logo=docker&logoColor=white">
 
@@ -82,8 +82,8 @@ A la racine du projet, lancer les 2 commandes suivantes séquentiellement :
 
 ## API Endpoints Documentation
 
-Swagger link for Patient-microservice : http://localhost:9011/swagger-ui.html#/
+Swagger link for Patient-microservice : http://localhost:9091/swagger-ui/
 
-Swagger link for PatientHistorical-microservice : http://localhost:9012/swagger-ui.html#/
+Swagger link for Note-microservice : http://localhost:9092/swagger-ui/
 
-Swagger link for PatientDiabetesRisk-microservice : http://localhost:9013/swagger-ui.html#/
+Swagger link for Assessment-microservice : http://localhost:9093/swagger-ui/
