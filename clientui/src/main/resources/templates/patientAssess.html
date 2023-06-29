@@ -93,7 +93,11 @@
             <hr/>
             <div class="form-group row ">
                 <p><span th:text="${diabeteAssessment1}"></span></p>
-                <p><span class="fw-bold fs-3 text-center" th:text="${diabeteAssessment2}">.</span></p>
+                <p><span class="fw-bold fs-3 text-center"
+                         th:text="${diabeteAssessment2}"
+                         th:style="|${diabeteAssessment2 == 'Early onset' ? 'color: red;' : 'color: dark;'}|"
+                >.</span></p>
+
             </div>
         </div>
     </div>
