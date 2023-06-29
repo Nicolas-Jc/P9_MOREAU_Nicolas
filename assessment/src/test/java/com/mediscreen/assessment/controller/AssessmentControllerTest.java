@@ -14,6 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,7 +33,10 @@ class AssessmentControllerTest {
     void getRiskLevelByPatientIdTest() throws Exception {
 
         // GIVEN
-        when(assessmentService.diabeteAssessment(1)).thenReturn("Test Controller");
+        List<String> strResult = new ArrayList<>();
+        strResult.add("Patient: LastName FirstName (age 40) diabetes assessment is:");
+        strResult.add("None");
+        when(assessmentService.diabeteAssessment(1)).thenReturn(strResult);
 
         // WHEN
         MvcResult result = mockMvc
@@ -40,9 +46,9 @@ class AssessmentControllerTest {
 
         // THEN
         String stringResult = result.getResponse().getContentAsString();
-        assertNotNull(stringResult);
-        assertEquals("Test Controller", stringResult);
 
+        assertNotNull(stringResult);
+        assertEquals("[\"Patient: LastName FirstName (age 40) diabetes assessment is:\",\"None\"]", stringResult);
     }
 
 }

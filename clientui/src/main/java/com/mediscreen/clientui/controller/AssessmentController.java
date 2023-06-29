@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @Controller
 public class AssessmentController {
     @Autowired
@@ -14,7 +16,7 @@ public class AssessmentController {
 
     @GetMapping(value = "/assessment/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getDiabeteAssessment(@PathVariable Integer id) {
+    public List<String> getDiabeteAssessment(@PathVariable Integer id) {
         return assessmentProxy.getRiskLevelByPatient(id);
     }
 

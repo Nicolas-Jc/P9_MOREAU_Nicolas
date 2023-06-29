@@ -34,7 +34,7 @@ public class AssessmentService {
     @Autowired
     private PatientsProxy microservicePatientsProxy;
 
-    public String diabeteAssessment(Integer patientId) {
+    public List<String> diabeteAssessment(Integer patientId) {
 
         String diabeteAssessment = RiskLevel.LEVEL_0.getMessage();
 
@@ -80,12 +80,16 @@ public class AssessmentService {
         }
 
         diabeteAssessment = (diabeteAssessment != null) ? diabeteAssessment : RiskLevel.LEVEL_0.getMessage();
-        return "Patient: "
-                + patient.getLastName()
-                + " "
-                + patient.getFirstName()
-                + " (age " + age + ") diabetes assessment is: "
-                + diabeteAssessment;
+
+        List<String> stringResult = new ArrayList<>();
+
+        String xxx = "Patient: " + patient.getLastName() + " " + patient.getFirstName()
+                + " (age " + age + ") diabetes assessment is:";
+
+        stringResult.add(xxx);
+        stringResult.add(diabeteAssessment);
+
+        return stringResult;
     }
 
     private Integer getTriggersCount(List<NoteModel> listNotes) {
