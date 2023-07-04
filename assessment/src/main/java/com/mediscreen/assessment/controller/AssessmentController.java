@@ -5,6 +5,8 @@ import com.mediscreen.assessment.service.AssessmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class AssessmentController {
 
@@ -12,7 +14,7 @@ public class AssessmentController {
     private AssessmentService assessmentService;
 
     @GetMapping("/assessment/{id}")
-    public String getRiskLevelByPatientId(@PathVariable int id) {
+    public List<String> getRiskLevelByPatientId(@PathVariable int id) {
         return assessmentService.diabeteAssessment(id);
 
     }

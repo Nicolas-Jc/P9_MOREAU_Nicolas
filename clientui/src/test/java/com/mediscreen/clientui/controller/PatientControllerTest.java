@@ -40,6 +40,7 @@ class PatientControllerTest {
     @MockBean
     private AssessmentProxy assessmentProxy;
 
+
     PatientModel patientBean1;
     PatientModel patientBean2;
     List<PatientModel> listPatientsBean;
@@ -183,13 +184,22 @@ class PatientControllerTest {
 
     @Test
     void patientNotesTest() throws Exception {
+        // GIVEN
+        List<String> strResult = new ArrayList<>();
+        strResult.add("Patient: LastName FirstName (age 40) diabetes assessment is:");
+        strResult.add("None");
+        when(assessmentProxy.getRiskLevelByPatient(1)).thenReturn(strResult);
         when(patientsProxy.getPatientById(1)).thenReturn(patientBean1);
         when(notesProxy.getNotesByPatient(1)).thenReturn(listNoteBean);
 
         mockMvc.perform(get("/patients/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("patientAssess"))
-                .andExpect(model().size(3))
+                .andExpect(model().size(4))
+                .andExpect(model().attributeExists("diabeteAssessment1"))
+                .andExpect(model().attribute("diabeteAssessment1", strResult.get(0)))
+                .andExpect(model().attributeExists("diabeteAssessment2"))
+                .andExpect(model().attribute("diabeteAssessment2", strResult.get(1)))
                 .andExpect(model().attributeExists("patient"))
                 .andExpect(model().attribute("patient", patientBean1))
                 .andExpect(model().attributeExists("listNotes"))

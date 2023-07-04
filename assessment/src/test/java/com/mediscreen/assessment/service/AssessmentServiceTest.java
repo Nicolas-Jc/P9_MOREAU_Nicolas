@@ -55,8 +55,10 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 40) diabetes assessment is: None", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 40) diabetes assessment is:", result.get(0));
+        assertEquals("None", result.get(1));
+
     }
 
     @Test
@@ -70,8 +72,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 31) diabetes assessment is: Borderline", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 31) diabetes assessment is:", result.get(0));
+        assertEquals("Borderline", result.get(1));
     }
 
     @Test
@@ -85,8 +88,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 35) diabetes assessment is: In Danger", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 35) diabetes assessment is:", result.get(0));
+        assertEquals("In Danger", result.get(1));
     }
 
     @Test
@@ -100,8 +104,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 38) diabetes assessment is: Early onset", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 38) diabetes assessment is:", result.get(0));
+        assertEquals("Early onset", result.get(1));
     }
 
     @Test
@@ -115,8 +120,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 29) diabetes assessment is: None", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 29) diabetes assessment is:", result.get(0));
+        assertEquals("None", result.get(1));
     }
 
     @Test
@@ -130,8 +136,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 25) diabetes assessment is: In Danger", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 25) diabetes assessment is:", result.get(0));
+        assertEquals("In Danger", result.get(1));
     }
 
     @Test
@@ -145,8 +152,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 23) diabetes assessment is: Early onset", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 23) diabetes assessment is:", result.get(0));
+        assertEquals("Early onset", result.get(1));
     }
 
     @Test
@@ -160,8 +168,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 28) diabetes assessment is: None", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 28) diabetes assessment is:", result.get(0));
+        assertEquals("None", result.get(1));
     }
 
     @Test
@@ -175,8 +184,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 20) diabetes assessment is: In Danger", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 20) diabetes assessment is:", result.get(0));
+        assertEquals("In Danger", result.get(1));
     }
 
     @Test
@@ -190,9 +200,9 @@ class AssessmentServiceTest {
         when(patientProxy.getPatientById(1)).thenReturn(patient1);
         when(noteProxy.getNotesByPatient(1)).thenReturn(listNotes);
 
-        String result = assessmentService.diabeteAssessment(1);
-        assertEquals("Patient: LastName FirstName (age 25) diabetes assessment is: Early onset", result);
+        List<String> result = assessmentService.diabeteAssessment(1);
+        assertEquals("Patient: LastName FirstName (age 25) diabetes assessment is:", result.get(0));
+        assertEquals("Early onset", result.get(1));
     }
-
 
 }

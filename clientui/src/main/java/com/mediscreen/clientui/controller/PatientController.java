@@ -136,9 +136,10 @@ public class PatientController {
             List<NoteModel> listNotes = notesProxy.getNotesByPatient(id);
             model.addAttribute("listNotes", listNotes);
             // Charge le résultat Risque Diabete
-            String diabetesResult = assessmentProxy.getRiskLevelByPatient(id);
+            List<String> diabetesResult = assessmentProxy.getRiskLevelByPatient(id);
             logger.info("diabetesResult : {}", diabetesResult);
-            model.addAttribute("diabeteAssessment", diabetesResult);
+            model.addAttribute("diabeteAssessment1", diabetesResult.get(0));
+            model.addAttribute("diabeteAssessment2", diabetesResult.get(1));
             return "patientAssess";
         } catch (FeignException e) {
             logger.error("FeignException : {}", e.toString());

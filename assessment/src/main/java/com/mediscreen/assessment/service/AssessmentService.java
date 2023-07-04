@@ -1,5 +1,6 @@
 package com.mediscreen.assessment.service;
 
+import com.mediscreen.assessment.constant.Triggers;
 import com.mediscreen.assessment.model.NoteModel;
 import com.mediscreen.assessment.model.PatientModel;
 import com.mediscreen.assessment.constant.RiskLevel;
@@ -24,9 +25,7 @@ public class AssessmentService {
 
     private static final Logger logger = LogManager.getLogger(AssessmentService.class);
 
-
-    List<String> triggersList = List.of("Hémoglobine A1C", "Microalbumine", "Taille", "Poids", "Fumeur",
-            "Anormal", "Cholestérol", "Vertige", "Rechute", "Réaction", "Anticorps");
+    private final List<String> triggersList = Triggers.getTriggers();
 
     @Autowired
     private NotesProxy microserviceNotesProxy;
@@ -34,7 +33,7 @@ public class AssessmentService {
     @Autowired
     private PatientsProxy microservicePatientsProxy;
 
-    public String diabeteAssessment(Integer patientId) {
+    public List<String> diabeteAssessment(Integer patientId) {
 
         String diabeteAssessment = RiskLevel.LEVEL_0.getMessage();
 
@@ -80,12 +79,16 @@ public class AssessmentService {
         }
 
         diabeteAssessment = (diabeteAssessment != null) ? diabeteAssessment : RiskLevel.LEVEL_0.getMessage();
-        return "Patient: "
-                + patient.getLastName()
-                + " "
-                + patient.getFirstName()
-                + " (age " + age + ") diabetes assessment is: "
-                + diabeteAssessment;
+
+        List<String> stringResult = new ArrayList<>();
+
+        String strResult = "Patient: " + patient.getLastName() + " " + patient.getFirstName()
+                + " (age " + age + ") diabetes assessment is:";
+
+        stringResult.add(strResult);
+        stringResult.add(diabeteAssessment);
+
+        return stringResult;
     }
 
     private Integer getTriggersCount(List<NoteModel> listNotes) {
