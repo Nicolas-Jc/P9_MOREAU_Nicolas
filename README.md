@@ -1,6 +1,6 @@
 # Mediscreen
 
-**Mediscreen** est une _application Web_ dont le but est de déterminer les patients les plus à
+**Mediscreen** est une _application Web_ ayant pour objectif de déterminer les patients les plus à
 risque au niveau diabète de type 2.
 
 ## Stack technique
